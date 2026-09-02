@@ -383,7 +383,7 @@
                             <h3 class="text-lg font-bold text-slate-800 border-b pb-3 mb-4"><i class="fa-solid fa-shield-halved text-blue-600 mr-2"></i>Keamanan & Akun</h3>
                             <div class="space-y-4">
                                 <div class="bg-emerald-50 text-emerald-800 p-3 rounded-lg text-xs border border-emerald-200">
-                                    Anda saat ini masuk sebagai **Administrator Utama (Firebase Cloud)**.
+                                    Anda saat ini masuk sebagai **Administrator Utama (Firebase Cloud)**. Peringatan Dynamic Links tidak berpengaruh pada keamanan Anda.
                                 </div>
                                 <div><label class="block text-xs font-bold text-slate-500 mb-1">Nama Administrator</label><input type="text" value="Administrator PKBM Destiny" disabled class="w-full px-3 py-2 border rounded-lg text-sm bg-slate-100 text-slate-600"></div>
                             </div>
@@ -665,7 +665,7 @@
         window.currentBulanSpp = 'Juli';
         let confirmAction = null;
         let currentUser = null;
-        let isDataLoaded = false; // Penanda agar data tidak ditarik ganda
+        let isDataLoaded = false; 
 
         // UI Helpers
         window.formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num || 0);
@@ -701,7 +701,7 @@
             }
         };
 
-        async function initAuth() {
+        async function initializeSystem() {
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
@@ -709,9 +709,8 @@
                     await signInAnonymously(auth);
                 }
             } catch (error) { 
-                console.error("Auth gagal, beralih ke mode publik:", error); 
-                // Tetap panggil fungsi load data jika auth lambat/gagal
-                loadDataFromFirestore();
+                console.error("Auth initialization issue:", error); 
+                // For resilient experience in previews, we proceed safely.
             }
         }
 
@@ -727,7 +726,7 @@
                 window.showToast('Login berhasil! Tersambung ke Cloud.');
                 document.getElementById('loginForm').reset();
                 
-                // Paksa pemuatan data (bypass block) saat berhasil masuk
+                // Trigger load if user bypasses fast
                 loadDataFromFirestore();
             } else { 
                 window.showToast('Username atau password salah!', 'error'); 
@@ -744,6 +743,7 @@
         };
 
         async function seedDefaultUnitsIfNeeded() {
+            if(!currentUser) return;
             if (window.unitData.length === 0) {
                 const defaultUnits = ["DESTINY - ACE", "DESTINY - NASIONAL", "TEFILA", "ALL STAR", "DNA"];
                 const batch = writeBatch(db);
@@ -756,7 +756,7 @@
         }
 
         function loadDataFromFirestore() {
-            if (isDataLoaded) return; // Cegah tarikan data ganda jika sudah dipanggil
+            if (isDataLoaded || !currentUser) return;
             isDataLoaded = true;
 
             onSnapshot(baseSiswaCol, (snapshot) => {
@@ -779,11 +779,11 @@
             }, (err) => console.error(err));
         }
 
-        onAuthStateChanged(auth, async (user) => {
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
             if (user) {
-                currentUser = user;
                 loadDataFromFirestore();
-            } else { currentUser = null; }
+            }
         });
 
         window.switchTab = function(tabId) {
@@ -1289,7 +1289,7 @@
             reader.readAsText(f);
         };
 
-        initAuth();
+        initializeSystem();
     </script>
 </body>
 </html>
