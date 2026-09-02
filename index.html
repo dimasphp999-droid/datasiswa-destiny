@@ -653,30 +653,107 @@
 
     <!-- SCRIPT APLIKASI UTAMA (VANILLA JS LENGKAP & STABIL) -->
     <script>
-        // Inisialisasi Database Lokal
-        window.siswaData = JSON.parse(localStorage.getItem('pkbm_siswa')) || [
-            { id: '1', nis: '1001', nisn: '001', nik: '33730101', nama: 'Adeline Benaya Purnomo', jk: 'Perempuan', tempat_lahir: 'Salatiga', tgl_lahir: '2008-05-12', agama: 'Kristen', unit: 'DESTINY - ACE', status: 'Aktif', spp_nominal: 1500000, ayah_nama: 'Budi P.', ayah_hp: '081234567890', kk_alamat: 'Jl. Aliwijayan No. 3-4', kk_kota: 'Salatiga' },
-            { id: '2', nis: '1002', nisn: '002', nik: '33730102', nama: 'Anna Joy Armistead', jk: 'Perempuan', tempat_lahir: 'Semarang', tgl_lahir: '2009-02-20', agama: 'Kristen', unit: 'ALL STAR', status: 'Aktif', spp_nominal: 1080000, ayah_nama: 'John A.', ayah_hp: '081987654321', kk_alamat: 'Jl. Pengilon', kk_kota: 'Salatiga' },
-            { id: '3', nis: '1003', nisn: '003', nik: '33730103', nama: 'Budi Santoso', jk: 'Laki-laki', tempat_lahir: 'Boyolali', tgl_lahir: '2010-11-05', agama: 'Islam', unit: 'TEFILA', status: 'Aktif', spp_nominal: 700000, ayah_nama: 'Santoso', ayah_hp: '085123456789', kk_alamat: 'Boyolali', kk_kota: 'Boyolali' }
-        ];
+        <!-- ... existing code ... -->
+                <!-- TAB: DATA SISWA -->
+                <div id="tab-siswa" class="tab-content hidden-el space-y-6">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col lg:flex-row gap-4 justify-between items-center">
+                        <div class="flex gap-2 w-full lg:w-auto">
+                            <input type="text" id="searchInput" placeholder="Cari nama, NIS..." class="w-full sm:w-80 px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div class="flex gap-2 w-full lg:w-auto flex-wrap lg:flex-nowrap justify-end">
+                            <button onclick="window.exportSiswaExcel()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center justify-center gap-2 shadow">
+                                <i class="fa-solid fa-download"></i> Export
+                            </button>
+                            <button onclick="window.bukaModalImport()" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center justify-center gap-2 shadow">
+                                <i class="fa-solid fa-upload"></i> Import
+                            </button>
+                            <button onclick="window.bukaModalAksiMassal()" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center justify-center gap-2 shadow">
+                                <i class="fa-solid fa-layer-group"></i> Aksi Massal
+                            </button>
+                            <button onclick="window.openSiswaModal('add')" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center justify-center gap-2 shadow">
+                                <i class="fa-solid fa-plus"></i> Tambah Siswa
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+<!-- ... existing code ... -->
+                <div class="pt-4 mt-2 border-t flex justify-end gap-2">
+                    <button type="button" onclick="window.tutupModal('massalModal')" class="px-4 py-2 bg-slate-200 rounded font-bold text-sm">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded text-sm">Proses Perubahan Massal</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        window.unitData = JSON.parse(localStorage.getItem('pkbm_units')) || [
-            { id: 'u1', nama: 'DESTINY - ACE' },
-            { id: 'u2', nama: 'DESTINY - NASIONAL' },
-            { id: 'u3', nama: 'TEFILA' },
-            { id: 'u4', nama: 'ALL STAR' },
-            { id: 'u5', nama: 'DNA' }
-        ];
+    <!-- MODAL IMPORT EXCEL -->
+    <div id="importModal" class="hidden-el fixed inset-0 z-[75] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm no-print">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden">
+            <div class="px-6 py-4 bg-indigo-600 text-white flex justify-between items-center">
+                <h3 class="font-bold text-lg"><i class="fa-solid fa-file-excel mr-2"></i> Import Data Siswa</h3>
+                <button onclick="window.tutupModal('importModal')" class="text-white hover:text-slate-200"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl">
+                    <h4 class="font-bold text-indigo-800 text-sm mb-2">Langkah 1: Download Template</h4>
+                    <p class="text-xs text-indigo-700 mb-3">Unduh template Excel standar kami, lalu isi data siswa mengikuti format kolom yang telah disediakan.</p>
+                    <button onclick="window.downloadTemplateImport()" class="bg-indigo-200 hover:bg-indigo-300 text-indigo-800 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                        <i class="fa-solid fa-download"></i> Download Template .xlsx
+                    </button>
+                </div>
 
-        window.sppData = JSON.parse(localStorage.getItem('pkbm_spp')) || {
-            '1': { 'Juli': { lunas: true, tgl_bayar: '2026-07-05', nominal: 1500000, metode: 'Transfer Bank' } },
-            '2': { 'Juli': { lunas: true, tgl_bayar: '2026-07-10', nominal: 1080000, metode: 'Cash / Tunai' } }
-        };
+                <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl">
+                    <h4 class="font-bold text-slate-800 text-sm mb-2">Langkah 2: Upload File Excel</h4>
+                    <p class="text-xs text-slate-500 mb-3">Pilih file Excel (.xlsx) yang sudah Anda isi untuk diunggah ke database.</p>
+                    <form id="importForm">
+                        <input type="file" id="fileImport" accept=".xlsx, .xls" required class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 mb-4 cursor-pointer outline-none">
+                        <div class="flex justify-end gap-3 border-t pt-4">
+                            <button type="button" onclick="window.tutupModal('importModal')" class="px-5 py-2.5 bg-slate-200 text-slate-700 hover:bg-slate-300 transition rounded-lg font-bold text-sm">Batal</button>
+                            <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold text-sm shadow-md transition">Mulai Import</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- SCRIPT APLIKASI UTAMA (FIREBASE CLOUD DATABASE & REALTIME SYNC) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, writeBatch, deleteField } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Konfigurasi Firebase dari Environment Immersive
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { projectId: "dummy" };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        // Menggunakan path public/data agar aplikasi ini bisa diakses kolaboratif oleh sesama admin PKBM
+        const dbBasePath = `artifacts/${appId}/public/data`;
+
+        // State Global Aplikasi
+        window.siswaData = [];
+        window.unitData = [];
+        window.sppData = {};
         window.currentBulanSpp = 'Juli';
         let confirmAction = null;
+        let currentUser = null;
+        let unsubSiswa, unsubUnit, unsubSpp;
 
-        // Utilitas Format & Modal
+        window.setLoading = function(show, text = "Memuat...") {
+            const loader = document.getElementById('loadingOverlay');
+            const loaderText = document.getElementById('loadingText');
+            if(loader) {
+                if(show) {
+                    if(loaderText) loaderText.innerText = text;
+                    loader.classList.remove('hidden-el');
+                } else {
+                    loader.classList.add('hidden-el');
+                }
+            }
+        };
+
         window.formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num || 0);
         window.tutupModal = (id) => document.getElementById(id).classList.add('hidden-el');
         
@@ -689,29 +766,14 @@
             setTimeout(() => { toast.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => toast.classList.add('hidden-el'), 300); }, 3000);
         };
 
-        function saveData() {
-            localStorage.setItem('pkbm_siswa', JSON.stringify(window.siswaData));
-            localStorage.setItem('pkbm_units', JSON.stringify(window.unitData));
-            localStorage.setItem('pkbm_spp', JSON.stringify(window.sppData));
-            updateUnitDropdowns();
-            renderSemuaTabel();
-        }
-
-        function renderSemuaTabel() {
-            renderDashboard();
-            renderTabelSiswa();
-            renderTabelSpp();
-            renderTabelUnit();
-            if(typeof renderKumulatif === 'function') renderKumulatif();
-        }
-
         window.tampilkanKonfirmasi = function(pesan, aksiFungsi) {
             document.getElementById('confirmMessage').innerText = pesan;
             confirmAction = aksiFungsi;
             document.getElementById('confirmModal').classList.remove('hidden-el');
         };
+        
         document.getElementById('confirmBtnYes').addEventListener('click', () => {
-            tutupModal('confirmModal');
+            window.tutupModal('confirmModal');
             if(typeof confirmAction === 'function') confirmAction();
         });
 
@@ -727,21 +789,88 @@
             }
         };
 
+        async function initAuth() {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Gagal Otentikasi Firebase:", error);
+                window.showToast("Koneksi Database Gagal!", "error");
+            }
+        }
+
+        function loadDataFromFirestore() {
+            if (!currentUser) return;
+            
+            // Listener Siswa
+            unsubSiswa = onSnapshot(collection(db, `${dbBasePath}/siswa`), (snapshot) => {
+                window.siswaData = [];
+                snapshot.forEach(doc => window.siswaData.push({ id: doc.id, ...doc.data() }));
+                window.renderTabelSiswa();
+                window.renderDashboard();
+                if(typeof window.renderKumulatif === 'function') window.renderKumulatif();
+            }, (error) => { console.error("Error load siswa", error); window.showToast("Koneksi terputus", "error"); });
+
+            // Listener Unit
+            unsubUnit = onSnapshot(collection(db, `${dbBasePath}/units`), (snapshot) => {
+                window.unitData = [];
+                snapshot.forEach(doc => window.unitData.push({ id: doc.id, ...doc.data() }));
+                
+                // Seed Default Unit jika kosong
+                if(window.unitData.length === 0) seedDefaultUnits();
+                
+                window.renderTabelUnit();
+                window.updateUnitDropdowns();
+            }, (error) => console.error(error));
+
+            // Listener SPP
+            unsubSpp = onSnapshot(collection(db, `${dbBasePath}/spp`), (snapshot) => {
+                window.sppData = {};
+                snapshot.forEach(doc => window.sppData[doc.id] = doc.data());
+                window.renderTabelSpp();
+                window.renderDashboard();
+            }, (error) => console.error(error));
+        }
+
+        async function seedDefaultUnits() {
+            if(!currentUser) return;
+            const defaults = ["DESTINY - ACE", "DESTINY - NASIONAL", "TEFILA", "ALL STAR", "DNA"];
+            const batch = writeBatch(db);
+            defaults.forEach(nama => {
+                const newRef = doc(collection(db, `${dbBasePath}/units`));
+                batch.set(newRef, { nama: nama });
+            });
+            await batch.commit();
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                loadDataFromFirestore();
+            } else {
+                currentUser = null;
+                if(unsubSiswa) unsubSiswa(); if(unsubUnit) unsubUnit(); if(unsubSpp) unsubSpp();
+            }
+        });
+
         window.prosesLogin = function(e) {
-            e.preventDefault(); // Mencegah reload halaman
+            e.preventDefault();
             const user = document.getElementById('loginUsername').value;
             const pass = document.getElementById('loginPassword').value;
             
+            // UI Security Gatekeeper
             if (user === 'admin' && pass === 'admin') {
                 document.getElementById('loginScreen').classList.add('hidden-el');
                 document.getElementById('mainApp').classList.remove('hidden-el');
                 document.body.classList.remove('overflow-hidden');
                 
-                saveData(); // Inisiasi render pertama kali
-                showToast('Login berhasil!');
+                window.showToast('Login berhasil! Tersambung ke Cloud.');
                 document.getElementById('loginForm').reset();
             } else {
-                showToast('Username atau password salah!', 'error');
+                window.showToast('Username atau password salah!', 'error');
             }
         };
 
@@ -751,7 +880,7 @@
             document.body.classList.add('overflow-hidden');
             document.getElementById('loginPassword').type = 'password';
             document.getElementById('eyeIcon').className = 'fa-regular fa-eye';
-            showToast('Berhasil Keluar');
+            window.showToast('Berhasil Keluar');
         };
 
         window.switchTab = function(tabId) {
@@ -769,11 +898,9 @@
             document.getElementById('headerTitle').innerText = titles[tabId] || 'Aplikasi';
             
             if(window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
-            if(tabId === 'dashboard') renderDashboard();
-            if(tabId === 'kumulatif') renderKumulatif();
         };
 
-        function renderDashboard() {
+        window.renderDashboard = function() {
             const aktif = window.siswaData.filter(s => s.status === 'Aktif');
             document.getElementById('dashSiswaCount').innerText = aktif.length;
             
@@ -785,12 +912,12 @@
                 if(bIni && bIni.lunas) { totalBulanIni += bIni.nominal; } else if (s.status === 'Aktif') { nunggakBulanIni++; }
             });
 
-            document.getElementById('dashSppTotal').innerText = formatRp(totalSemua);
-            document.getElementById('dashSppCount').innerText = formatRp(totalBulanIni);
+            document.getElementById('dashSppTotal').innerText = window.formatRp(totalSemua);
+            document.getElementById('dashSppCount').innerText = window.formatRp(totalBulanIni);
             document.getElementById('dashNunggakCount').innerText = nunggakBulanIni;
-        }
+        };
 
-        // UNIT
+        // --- MANAJEMEN UNIT ---
         window.renderTabelUnit = function() {
             const tbody = document.getElementById('unitTableBody'); if(!tbody) return;
             tbody.innerHTML = '';
@@ -802,8 +929,8 @@
                     <td class="p-4 text-center font-bold text-slate-500">${idx + 1}</td>
                     <td class="p-4 font-bold text-blue-700">${u.nama}</td>
                     <td class="p-4 text-right">
-                        <button onclick="bukaFormUnit('${u.id}')" class="p-2 text-amber-600 hover:text-amber-800 transition"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="tampilkanKonfirmasi('Hapus unit ini?', () => hapusUnit('${u.id}'))" class="p-2 text-rose-600 hover:text-rose-800 transition"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="window.bukaFormUnit('${u.id}')" class="p-2 text-amber-600 hover:text-amber-800 transition"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="window.tampilkanKonfirmasi('Hapus unit ini?', () => window.hapusUnit('${u.id}'))" class="p-2 text-rose-600 hover:text-rose-800 transition"><i class="fa-solid fa-trash"></i></button>
                     </td></tr>`;
             });
         };
@@ -827,40 +954,58 @@
             document.getElementById('unitModal').classList.remove('hidden-el');
         };
 
-        document.getElementById('unitForm').addEventListener('submit', function(e) {
+        document.getElementById('unitForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const id = document.getElementById('formUnitId').value || 'u_' + Date.now();
+            if(!currentUser) return;
+            const id = document.getElementById('formUnitId').value;
             const nama = document.getElementById('uNama').value;
-            const idx = window.unitData.findIndex(x => x.id === id);
-            if(idx > -1) window.unitData[idx].nama = nama; else window.unitData.push({ id, nama });
-            saveData(); tutupModal('unitModal'); showToast('Unit Disimpan!');
+            
+            try {
+                window.setLoading(true, "Menyimpan Unit...");
+                let unitRef;
+                if(id) {
+                    unitRef = doc(db, `${dbBasePath}/units`, id);
+                } else {
+                    unitRef = doc(collection(db, `${dbBasePath}/units`));
+                }
+                await setDoc(unitRef, { nama: nama }, { merge: true });
+                window.tutupModal('unitModal');
+                window.showToast('Unit Disimpan ke Cloud!');
+            } catch(e) { window.showToast('Gagal Menyimpan', 'error'); }
+            finally { window.setLoading(false); }
         });
 
-        window.hapusUnit = function(id) {
-            window.unitData = window.unitData.filter(x => x.id !== id);
-            saveData(); showToast('Unit Dihapus');
+        window.hapusUnit = async function(id) {
+            if(!currentUser) return;
+            try {
+                window.setLoading(true, "Menghapus Unit...");
+                await deleteDoc(doc(db, `${dbBasePath}/units`, id));
+                window.showToast('Unit Dihapus');
+            } catch(e) { window.showToast('Gagal Menghapus', 'error'); }
+            finally { window.setLoading(false); }
         };
 
-        // SISWA
-        function renderTabelSiswa(filter = '') {
+        window.renderTabelSiswa = function(filter = '') {
             const tbody = document.getElementById('siswaTableBody'); if(!tbody) return;
             tbody.innerHTML = '';
-            const filtered = window.siswaData.filter(s => (s.nama||'').toLowerCase().includes(filter.toLowerCase()) || (s.nis||'').includes(filter));
+            const valFilter = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase();
+            const filtered = window.siswaData.filter(s => (s.nama||'').toLowerCase().includes(valFilter) || (s.nis||'').includes(valFilter));
+            
             filtered.forEach(s => {
                 const aksi = `
-                    <button onclick="lihatDetailSiswa('${s.id}')" class="p-2 text-blue-600 hover:text-blue-800 transition" title="Detail"><i class="fa-solid fa-eye"></i></button>
-                    <button onclick="bukaFormEditSiswa('${s.id}')" class="p-2 text-amber-600 hover:text-amber-800 transition" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                    <button onclick="tampilkanKonfirmasi('Hapus permanen siswa ini?', () => hapusSiswa('${s.id}'))" class="p-2 text-rose-600 hover:text-rose-800 transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>`;
+                    <button onclick="window.lihatDetailSiswa('${s.id}')" class="p-2 text-blue-600 hover:text-blue-800 transition" title="Detail"><i class="fa-solid fa-eye"></i></button>
+                    <button onclick="window.bukaFormEditSiswa('${s.id}')" class="p-2 text-amber-600 hover:text-amber-800 transition" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                    <button onclick="window.tampilkanKonfirmasi('Hapus permanen siswa ini?', () => window.hapusSiswa('${s.id}'))" class="p-2 text-rose-600 hover:text-rose-800 transition" title="Hapus"><i class="fa-solid fa-trash"></i></button>`;
                 const clr = s.status === 'Aktif' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200';
                 tbody.innerHTML += `<tr class="border-b border-slate-100 hover:bg-slate-50 transition">
                     <td class="p-4"><div class="font-bold text-slate-900">${s.nis||'-'}</div><div class="text-xs text-slate-500">${s.nisn||''}</div></td>
                     <td class="p-4 font-bold text-slate-900">${s.nama}</td>
                     <td class="p-4"><div class="text-blue-700 text-xs font-bold">${s.unit||'-'}</div><span class="px-2 py-0.5 text-[10px] border rounded font-bold mt-1 inline-block ${clr}">${s.status}</span></td>
-                    <td class="p-4 font-bold text-emerald-700">${formatRp(s.spp_nominal)}</td>
+                    <td class="p-4 font-bold text-emerald-700">${window.formatRp(s.spp_nominal)}</td>
                     <td class="p-4 text-right whitespace-nowrap">${aksi}</td></tr>`;
             });
-        }
-        document.getElementById('searchInput').addEventListener('input', (e) => renderTabelSiswa(e.target.value));
+        };
+        document.getElementById('searchInput').addEventListener('input', () => window.renderTabelSiswa());
 
         window.openSiswaModal = function() {
             document.getElementById('siswaForm').reset(); document.getElementById('formSiswaId').value = '';
@@ -872,79 +1017,58 @@
             const s = window.siswaData.find(x => x.id === id); if(!s) return;
             document.getElementById('formSiswaId').value = s.id;
             
-            // Map keys
-            document.getElementById('fNama').value = s.nama || '';
-            document.getElementById('fNis').value = s.nis || '';
-            document.getElementById('fNisn').value = s.nisn || '';
-            document.getElementById('fNik').value = s.nik || '';
-            document.getElementById('fJk').value = s.jk || 'Laki-laki';
-            document.getElementById('fTmpLahir').value = s.tempat_lahir || '';
-            document.getElementById('fTglLahir').value = s.tgl_lahir || '';
-            document.getElementById('fAgama').value = s.agama || 'Islam';
-            document.getElementById('fEmailSiswa').value = s.email || '';
-            document.getElementById('fHpSiswa').value = s.hp || '';
+            const mapping = ['fNama:nama','fNis:nis','fNisn:nisn','fNik:nik','fJk:jk','fTmpLahir:tempat_lahir','fTglLahir:tanggal_lahir','fAgama:agama','fEmailSiswa:email','fHpSiswa:telp',
+            'fSekolahAsal:sekolah_asal','fTglDiterima:tanggal_diterima','fUnit:unit','fStatus:status','fSppNominal:spp_nominal',
+            'fNoKk:kk_nomor','fKkAlamat:kk_alamat','fKkRtRw:kk_rt','fKkKel:kk_kelurahan','fKkKec:kk_kecamatan','fKkKota:kk_kabupaten',
+            'fDomAlamat:dom_alamat','fDomKel:dom_kelurahan','fDomKec:dom_kecamatan','fDomKota:dom_kabupaten',
+            'fAyahNama:ayah_nama','fAyahKerja:ayah_pekerjaan','fAyahHp:ayah_hp','fIbuNama:ibu_nama','fIbuKerja:ibu_pekerjaan','fIbuHp:ibu_hp','fWaliNama:wali_nama','fWaliKerja:wali_pekerjaan','fWaliHp:wali_hp'];
             
-            document.getElementById('fUnit').value = s.unit || '';
-            document.getElementById('fStatus').value = s.status || 'Aktif';
-            document.getElementById('fSppNominal').value = s.spp_nominal || 0;
-            document.getElementById('fSekolahAsal').value = s.sekolah_asal || '';
-            document.getElementById('fTglDiterima').value = s.tgl_diterima || '';
-            
-            document.getElementById('fNoKk').value = s.no_kk || '';
-            document.getElementById('fKkAlamat').value = s.kk_alamat || '';
-            document.getElementById('fKkRtRw').value = s.kk_rt_rw || '';
-            document.getElementById('fKkKel').value = s.kk_kel || '';
-            document.getElementById('fKkKec').value = s.kk_kec || '';
-            document.getElementById('fKkKota').value = s.kk_kota || '';
-            
-            document.getElementById('fDomAlamat').value = s.dom_alamat || '';
-            document.getElementById('fDomKel').value = s.dom_kel || '';
-            document.getElementById('fDomKec').value = s.dom_kec || '';
-            document.getElementById('fDomKota').value = s.dom_kota || '';
-            
-            document.getElementById('fAyahNama').value = s.ayah_nama || '';
-            document.getElementById('fAyahKerja').value = s.ayah_kerja || '';
-            document.getElementById('fAyahHp').value = s.ayah_hp || '';
-            document.getElementById('fIbuNama').value = s.ibu_nama || '';
-            document.getElementById('fIbuKerja').value = s.ibu_kerja || '';
-            document.getElementById('fIbuHp').value = s.ibu_hp || '';
-            document.getElementById('fWaliNama').value = s.wali_nama || '';
-            document.getElementById('fWaliKerja').value = s.wali_kerja || '';
-            document.getElementById('fWaliHp').value = s.wali_hp || '';
+            mapping.forEach(m => {
+                const [elId, dbKey] = m.split(':');
+                const el = document.getElementById(elId);
+                if(el) el.value = s[dbKey] || (el.type==='number' ? 0 : '');
+            });
 
             document.getElementById('siswaModalTitle').innerText = 'Edit Data Siswa';
             document.getElementById('siswaModal').classList.remove('hidden-el');
         };
 
-        document.getElementById('siswaForm').addEventListener('submit', function(e) {
+        document.getElementById('siswaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const id = document.getElementById('formSiswaId').value || 's_' + Date.now();
+            if(!currentUser) return;
             
-            const data = { 
-                id: id,
-                nama: document.getElementById('fNama').value, nis: document.getElementById('fNis').value, nisn: document.getElementById('fNisn').value,
-                nik: document.getElementById('fNik').value, jk: document.getElementById('fJk').value, tempat_lahir: document.getElementById('fTmpLahir').value,
-                tgl_lahir: document.getElementById('fTglLahir').value, agama: document.getElementById('fAgama').value, email: document.getElementById('fEmailSiswa').value,
-                hp: document.getElementById('fHpSiswa').value, unit: document.getElementById('fUnit').value, status: document.getElementById('fStatus').value,
-                spp_nominal: Number(document.getElementById('fSppNominal').value) || 0, 
-                sekolah_asal: document.getElementById('fSekolahAsal').value, tgl_diterima: document.getElementById('fTglDiterima').value,
-                no_kk: document.getElementById('fNoKk').value, kk_alamat: document.getElementById('fKkAlamat').value, kk_rt_rw: document.getElementById('fKkRtRw').value,
-                kk_kel: document.getElementById('fKkKel').value, kk_kec: document.getElementById('fKkKec').value, kk_kota: document.getElementById('fKkKota').value,
-                dom_alamat: document.getElementById('fDomAlamat').value, dom_kel: document.getElementById('fDomKel').value, dom_kec: document.getElementById('fDomKec').value, dom_kota: document.getElementById('fDomKota').value,
-                ayah_nama: document.getElementById('fAyahNama').value, ayah_kerja: document.getElementById('fAyahKerja').value, ayah_hp: document.getElementById('fAyahHp').value,
-                ibu_nama: document.getElementById('fIbuNama').value, ibu_kerja: document.getElementById('fIbuKerja').value, ibu_hp: document.getElementById('fIbuHp').value,
-                wali_nama: document.getElementById('fWaliNama').value, wali_kerja: document.getElementById('fWaliKerja').value, wali_hp: document.getElementById('fWaliHp').value
+            const id = document.getElementById('formSiswaId').value;
+            const data = {
+                nama: document.getElementById('fNama').value, nis: document.getElementById('fNis').value, nisn: document.getElementById('fNisn').value, nik: document.getElementById('fNik').value,
+                jk: document.getElementById('fJk').value, tempat_lahir: document.getElementById('fTmpLahir').value, tanggal_lahir: document.getElementById('fTglLahir').value, agama: document.getElementById('fAgama').value, email: document.getElementById('fEmailSiswa').value, telp: document.getElementById('fHpSiswa').value,
+                unit: document.getElementById('fUnit').value, status: document.getElementById('fStatus').value, spp_nominal: Number(document.getElementById('fSppNominal').value) || 0,
+                sekolah_asal: document.getElementById('fSekolahAsal').value, tanggal_diterima: document.getElementById('fTglDiterima').value,
+                kk_nomor: document.getElementById('fNoKk').value, kk_alamat: document.getElementById('fKkAlamat').value, kk_rt: document.getElementById('fKkRtRw').value, kk_kelurahan: document.getElementById('fKkKel').value, kk_kecamatan: document.getElementById('fKkKec').value, kk_kabupaten: document.getElementById('fKkKota').value,
+                dom_alamat: document.getElementById('fDomAlamat').value, dom_kelurahan: document.getElementById('fDomKel').value, dom_kecamatan: document.getElementById('fDomKec').value, dom_kabupaten: document.getElementById('fDomKota').value,
+                ayah_nama: document.getElementById('fAyahNama').value, ayah_pekerjaan: document.getElementById('fAyahKerja').value, ayah_hp: document.getElementById('fAyahHp').value,
+                ibu_nama: document.getElementById('fIbuNama').value, ibu_pekerjaan: document.getElementById('fIbuKerja').value, ibu_hp: document.getElementById('fIbuHp').value,
+                wali_nama: document.getElementById('fWaliNama').value, wali_pekerjaan: document.getElementById('fWaliKerja').value, wali_hp: document.getElementById('fWaliHp').value
             };
             
-            const idx = window.siswaData.findIndex(x => x.id === id);
-            if(idx > -1) window.siswaData[idx] = data; else window.siswaData.unshift(data);
-            saveData(); tutupModal('siswaModal'); showToast('Data Siswa Disimpan!');
+            try {
+                window.setLoading(true, "Menyimpan Data Siswa ke Cloud...");
+                let docRef = id ? doc(db, `${dbBasePath}/siswa`, id) : doc(collection(db, `${dbBasePath}/siswa`));
+                await setDoc(docRef, data, { merge: true });
+                window.tutupModal('siswaModal');
+                window.showToast('Data Siswa Disimpan!');
+            } catch(err) { window.showToast('Gagal Menyimpan!', 'error'); console.error(err); }
+            finally { window.setLoading(false); }
         });
 
-        window.hapusSiswa = function(id) {
-            window.siswaData = window.siswaData.filter(s => s.id !== id);
-            delete window.sppData[id];
-            saveData(); showToast('Siswa Dihapus Permanen');
+        window.hapusSiswa = async function(id) {
+            if(!currentUser) return;
+            try {
+                window.setLoading(true, "Menghapus Permanen...");
+                await deleteDoc(doc(db, `${dbBasePath}/siswa`, id));
+                await deleteDoc(doc(db, `${dbBasePath}/spp`, id)); // Hapus history SPP-nya juga
+                window.showToast('Siswa Dihapus Permanen');
+            } catch(e) { window.showToast('Gagal Hapus', 'error'); }
+            finally { window.setLoading(false); }
         };
 
         window.lihatDetailSiswa = function(id) {
@@ -952,7 +1076,7 @@
             document.getElementById('detailSiswaContent').innerHTML = `
                 <div class="space-y-4 text-sm">
                     <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100 shadow-sm text-center">
-                        <h4 class="font-black text-blue-900 text-xl mb-1">${s.nama}</h4>
+                        <h4 class="font-black text-blue-900 text-xl mb-1">${s.nama||'-'}</h4>
                         <div class="inline-flex items-center gap-3 bg-white px-4 py-2 rounded-lg border border-blue-200 mt-2">
                             <span class="text-xs text-slate-500 font-bold">NIS: <span class="text-slate-900">${s.nis||'-'}</span></span>
                             <span class="w-1 h-1 rounded-full bg-slate-300"></span>
@@ -968,37 +1092,36 @@
                                 <h5 class="font-bold text-slate-800 border-b pb-2 mb-3"><i class="fa-solid fa-address-card mr-1"></i> Data Pribadi & Akademik</h5>
                                 <table class="w-full text-xs">
                                     <tr><td class="text-slate-500 py-1 w-1/3">NISN / NIK</td><td class="font-bold text-slate-900">${s.nisn||'-'} / ${s.nik||'-'}</td></tr>
-                                    <tr><td class="text-slate-500 py-1">T.T.L</td><td class="font-bold text-slate-900">${s.tempat_lahir||'-'}, ${s.tgl_lahir||'-'}</td></tr>
+                                    <tr><td class="text-slate-500 py-1">T.T.L</td><td class="font-bold text-slate-900">${s.tempat_lahir||'-'}, ${s.tanggal_lahir||'-'}</td></tr>
                                     <tr><td class="text-slate-500 py-1">Kelamin</td><td class="font-bold text-slate-900">${s.jk||'-'}</td></tr>
                                     <tr><td class="text-slate-500 py-1">Agama</td><td class="font-bold text-slate-900">${s.agama||'-'}</td></tr>
-                                    <tr><td class="text-slate-500 py-1">Kontak</td><td class="font-bold text-slate-900">${s.hp||'-'} | ${s.email||'-'}</td></tr>
+                                    <tr><td class="text-slate-500 py-1">Kontak</td><td class="font-bold text-slate-900">${s.telp||'-'} | ${s.email||'-'}</td></tr>
                                     <tr><td class="text-slate-500 py-1 border-t mt-2 pt-2">Sekolah Asal</td><td class="font-bold text-slate-900 border-t mt-2 pt-2">${s.sekolah_asal||'-'}</td></tr>
-                                    <tr><td class="text-slate-500 py-1">Tgl Diterima</td><td class="font-bold text-slate-900">${s.tgl_diterima||'-'}</td></tr>
-                                    <tr><td class="text-slate-500 py-1 font-bold pt-3">SPP Bulanan</td><td class="font-bold text-emerald-700 pt-3">${formatRp(s.spp_nominal)}</td></tr>
+                                    <tr><td class="text-slate-500 py-1 font-bold pt-3">SPP Bulanan</td><td class="font-bold text-emerald-700 pt-3">${window.formatRp(s.spp_nominal)}</td></tr>
                                 </table>
                             </div>
                             <div class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm">
                                 <h5 class="font-bold text-slate-800 border-b pb-2 mb-3"><i class="fa-solid fa-map-location-dot mr-1"></i> Informasi Alamat</h5>
-                                <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Alamat Sesuai KK (No. ${s.no_kk||'-'})</p>
-                                <p class="text-xs text-slate-900 font-bold mb-1">${s.kk_alamat||'-'} RT/RW ${s.kk_rt_rw||'-'}</p>
-                                <p class="text-[10px] text-slate-600 mb-3">${s.kk_kel||'-'}, Kec. ${s.kk_kec||'-'}, ${s.kk_kota||'-'}</p>
+                                <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Alamat Sesuai KK (No. ${s.kk_nomor||'-'})</p>
+                                <p class="text-xs text-slate-900 font-bold mb-1">${s.kk_alamat||'-'} RT/RW ${s.kk_rt||'-'}</p>
+                                <p class="text-[10px] text-slate-600 mb-3">${s.kk_kelurahan||'-'}, Kec. ${s.kk_kecamatan||'-'}, ${s.kk_kabupaten||'-'}</p>
                                 
                                 <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Alamat Domisili</p>
                                 <p class="text-xs text-slate-900 font-bold mb-1">${s.dom_alamat||'-'}</p>
-                                <p class="text-[10px] text-slate-600">${s.dom_kel||'-'}, Kec. ${s.dom_kec||'-'}, ${s.dom_kota||'-'}</p>
+                                <p class="text-[10px] text-slate-600">${s.dom_kelurahan||'-'}, Kec. ${s.dom_kecamatan||'-'}, ${s.dom_kabupaten||'-'}</p>
                             </div>
                         </div>
                         <div class="space-y-4">
                             <div class="bg-blue-50 p-4 border border-blue-100 rounded-xl shadow-sm">
                                 <h5 class="font-bold text-blue-800 border-b border-blue-200 pb-2 mb-3"><i class="fa-solid fa-users mr-1"></i> Data Orang Tua & Wali</h5>
                                 <p class="text-xs text-blue-900 font-bold">Ayah: ${s.ayah_nama||'-'}</p>
-                                <p class="text-[10px] text-blue-700 mb-3">Kerja: ${s.ayah_kerja||'-'} | HP: <b>${s.ayah_hp||'-'}</b></p>
+                                <p class="text-[10px] text-blue-700 mb-3">Kerja: ${s.ayah_pekerjaan||'-'} | HP: <b>${s.ayah_hp||'-'}</b></p>
                                 
                                 <p class="text-xs text-pink-700 font-bold border-t border-blue-100 pt-3">Ibu: ${s.ibu_nama||'-'}</p>
-                                <p class="text-[10px] text-pink-600 mb-3">Kerja: ${s.ibu_kerja||'-'} | HP: <b>${s.ibu_hp||'-'}</b></p>
+                                <p class="text-[10px] text-pink-600 mb-3">Kerja: ${s.ibu_pekerjaan||'-'} | HP: <b>${s.ibu_hp||'-'}</b></p>
                                 
                                 <p class="text-xs text-amber-700 font-bold border-t border-blue-100 pt-3">Wali: ${s.wali_nama||'-'}</p>
-                                <p class="text-[10px] text-amber-600">Kerja: ${s.wali_kerja||'-'} | HP: <b>${s.wali_hp||'-'}</b></p>
+                                <p class="text-[10px] text-amber-600">Kerja: ${s.wali_pekerjaan||'-'} | HP: <b>${s.wali_hp||'-'}</b></p>
                             </div>
                         </div>
                     </div>
@@ -1030,41 +1153,56 @@
             document.getElementById('massalModal').classList.remove('hidden-el');
         };
 
-        document.getElementById('massalForm').addEventListener('submit', function(e) {
+        document.getElementById('massalForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            if(!currentUser) return;
             const type = document.getElementById('massalType').value;
             const unit = document.getElementById('mUnit').value;
-            tutupModal('massalModal');
+            window.tutupModal('massalModal');
 
             if(type === 'update') {
                 const newStatus = document.getElementById('mStatus').value;
-                tampilkanKonfirmasi(`Ubah status siswa unit ${unit} menjadi [${newStatus}]?`, () => {
-                    let count = 0;
-                    window.siswaData.forEach(s => {
-                        if(unit === 'SEMUA' || s.unit === unit) { s.status = newStatus; count++; }
-                    });
-                    saveData(); showToast(`Berhasil mengubah ${count} status siswa!`);
+                window.tampilkanKonfirmasi(`Ubah status siswa unit ${unit} menjadi [${newStatus}]?`, async () => {
+                    window.setLoading(true, "Memperbarui Massal di Cloud...");
+                    try {
+                        const targets = window.siswaData.filter(s => unit === 'SEMUA' || s.unit === unit);
+                        for(let i=0; i < targets.length; i+=400) { // Chunking per 400
+                            const chunk = targets.slice(i, i+400);
+                            const batch = writeBatch(db);
+                            chunk.forEach(s => batch.set(doc(db, `${dbBasePath}/siswa`, s.id), { status: newStatus }, { merge: true }));
+                            await batch.commit();
+                        }
+                        window.showToast(`Berhasil mengubah status ${targets.length} siswa!`);
+                    } catch(err) { window.showToast("Gagal update massal!", "error"); }
+                    finally { window.setLoading(false); }
                 });
             } else {
                 const hStatus = document.getElementById('hStatus').value;
-                tampilkanKonfirmasi(`HAPUS permanen data siswa (Unit: ${unit}, Status: ${hStatus})?`, () => {
-                    let count = 0;
-                    window.siswaData = window.siswaData.filter(s => {
-                        const matchUnit = (unit === 'SEMUA' || s.unit === unit);
-                        const matchStatus = (hStatus === 'SEMUA' || s.status === hStatus);
-                        if(matchUnit && matchStatus) {
-                            delete window.sppData[s.id]; count++;
-                            return false;
+                window.tampilkanKonfirmasi(`HAPUS permanen data siswa (Unit: ${unit}, Status: ${hStatus})?`, async () => {
+                    window.setLoading(true, "Menghapus Massal di Cloud...");
+                    try {
+                        const targets = window.siswaData.filter(s => {
+                            const matchUnit = (unit === 'SEMUA' || s.unit === unit);
+                            const matchStatus = (hStatus === 'SEMUA' || s.status === hStatus);
+                            return matchUnit && matchStatus;
+                        });
+                        for(let i=0; i < targets.length; i+=200) { // Chunking hapus
+                            const chunk = targets.slice(i, i+200);
+                            const batch = writeBatch(db);
+                            chunk.forEach(s => {
+                                batch.delete(doc(db, `${dbBasePath}/siswa`, s.id));
+                                batch.delete(doc(db, `${dbBasePath}/spp`, s.id));
+                            });
+                            await batch.commit();
                         }
-                        return true;
-                    });
-                    saveData(); showToast(`Berhasil menghapus ${count} data!`);
+                        window.showToast(`Berhasil menghapus ${targets.length} data!`);
+                    } catch(err) { window.showToast("Gagal hapus massal!", "error"); }
+                    finally { window.setLoading(false); }
                 });
             }
         });
 
-        // KUMULATIF
-        function renderKumulatif() {
+        window.renderKumulatif = function() {
             const tbody = document.getElementById('kumulatifTableBody');
             const tfoot = document.getElementById('kumulatifTableFoot');
             if(!tbody || !tfoot) return;
@@ -1115,7 +1253,7 @@
                     <td class="p-2 text-center border-r border-slate-300 text-purple-700">${grand.Lulus}</td>
                     <td class="p-3 text-center text-lg font-black text-slate-900 bg-slate-200">${grand.Total}</td>
                 </tr>`;
-        }
+        };
 
         window.cetakKumulatif = function() {
             document.getElementById('printKumulatifBody').innerHTML = document.getElementById('kumulatifTableBody').innerHTML;
@@ -1123,12 +1261,11 @@
             window.print();
         };
 
-        // SPP & EXCEL
         document.getElementById('bulanSppSelect').addEventListener('change', (e) => {
-            window.currentBulanSpp = e.target.value; renderTabelSpp(); renderDashboard();
+            window.currentBulanSpp = e.target.value; window.renderTabelSpp(); window.renderDashboard();
         });
 
-        function renderTabelSpp() {
+        window.renderTabelSpp = function() {
             const tbody = document.getElementById('sppTableBody'); if(!tbody) return;
             tbody.innerHTML = '';
             let totalBulan = 0;
@@ -1138,30 +1275,30 @@
                 if(isLunas) totalBulan += b.nominal;
 
                 let statusHtml = `<span class="px-2.5 py-1 text-[10px] font-bold rounded-lg bg-rose-50 border border-rose-200 text-rose-700 shadow-sm">BELUM BAYAR</span>`;
-                let aksiHtml = `<button onclick="bukaModalBayar('${s.id}')" class="px-3 py-1.5 bg-blue-100 hover:bg-blue-600 text-blue-700 hover:text-white text-xs font-bold rounded-lg transition shadow-sm">Catat Bayar</button>`;
+                let aksiHtml = `<button onclick="window.bukaModalBayar('${s.id}')" class="px-3 py-1.5 bg-blue-100 hover:bg-blue-600 text-blue-700 hover:text-white text-xs font-bold rounded-lg transition shadow-sm">Catat Bayar</button>`;
                 let waHtml = '';
 
-                if(!isLunas && s.status === 'Aktif' && (s.ayah_hp || s.ibu_hp || s.hp)) {
-                    let hp = String(s.ayah_hp || s.ibu_hp || s.hp).replace(/^0/, '62').replace(/\D/g, '');
-                    let psn = `Shalom Bapak/Ibu Wali dari ${s.nama},\nKami dari PKBM Destiny menginformasikan tagihan SPP bulan ${window.currentBulanSpp} sebesar ${formatRp(s.spp_nominal)} belum lunas. Mohon untuk segera diselesaikan. Terima kasih.`;
+                if(!isLunas && s.status === 'Aktif' && (s.ayah_hp || s.ibu_hp || s.telp)) {
+                    let hp = String(s.ayah_hp || s.ibu_hp || s.telp).replace(/^0/, '62').replace(/\D/g, '');
+                    let psn = `Shalom Bapak/Ibu Wali dari ${s.nama},\nKami dari PKBM Destiny menginformasikan tagihan SPP bulan ${window.currentBulanSpp} sebesar ${window.formatRp(s.spp_nominal)} belum lunas. Mohon untuk segera diselesaikan. Terima kasih.`;
                     waHtml = `<a href="https://wa.me/${hp}?text=${encodeURIComponent(psn)}" target="_blank" class="px-3 py-1.5 bg-emerald-100 hover:bg-emerald-600 text-emerald-700 hover:text-white text-xs font-bold rounded-lg transition shadow-sm ml-1" title="Kirim Tagihan WA"><i class="fa-brands fa-whatsapp"></i></a>`;
                 }
 
                 if(isLunas) {
                     statusHtml = `<div class="flex flex-col gap-1 w-max"><span class="px-2.5 py-0.5 text-[10px] font-bold rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 shadow-sm"><i class="fa-solid fa-check mr-1"></i> LUNAS</span><span class="text-[10px] text-slate-500 font-medium">${b.tgl_bayar} • ${b.metode}</span></div>`;
-                    aksiHtml = `<button onclick="cetakKwitansi('${s.id}')" class="px-3 py-1.5 bg-slate-800 text-white text-xs font-bold rounded-lg hover:bg-black transition shadow-sm mr-1" title="Cetak Kwitansi"><i class="fa-solid fa-print"></i></button>
-                                <button onclick="bukaModalBayar('${s.id}', true)" class="px-2.5 py-1.5 bg-amber-100 text-amber-700 hover:bg-amber-600 hover:text-white text-xs font-bold rounded-lg transition shadow-sm" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                                <button onclick="tampilkanKonfirmasi('Batalkan status lunas SPP ini?', () => batalBayar('${s.id}'))" class="px-2.5 py-1.5 bg-rose-100 text-rose-700 hover:bg-rose-600 hover:text-white text-xs font-bold rounded-lg transition shadow-sm ml-1" title="Batalkan"><i class="fa-solid fa-xmark"></i></button>`;
+                    aksiHtml = `<button onclick="window.cetakKwitansi('${s.id}')" class="px-3 py-1.5 bg-slate-800 text-white text-xs font-bold rounded-lg hover:bg-black transition shadow-sm mr-1" title="Cetak Kwitansi"><i class="fa-solid fa-print"></i></button>
+                                <button onclick="window.bukaModalBayar('${s.id}', true)" class="px-2.5 py-1.5 bg-amber-100 text-amber-700 hover:bg-amber-600 hover:text-white text-xs font-bold rounded-lg transition shadow-sm" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                                <button onclick="window.tampilkanKonfirmasi('Batalkan status lunas SPP ini?', () => window.batalBayar('${s.id}'))" class="px-2.5 py-1.5 bg-rose-100 text-rose-700 hover:bg-rose-600 hover:text-white text-xs font-bold rounded-lg transition shadow-sm ml-1" title="Batalkan"><i class="fa-solid fa-xmark"></i></button>`;
                 }
                 
                 tbody.innerHTML += `<tr class="border-b border-slate-100 hover:bg-slate-50 transition ${s.status!=='Aktif'?'opacity-50':''}">
                     <td class="p-4"><div class="font-bold text-slate-900">${s.nama}</div><div class="text-[10px] text-blue-600 font-bold">${s.unit||'-'}</div></td>
-                    <td class="p-4 font-bold text-slate-700">${formatRp(s.spp_nominal)}</td>
+                    <td class="p-4 font-bold text-slate-700">${window.formatRp(s.spp_nominal)}</td>
                     <td class="p-4">${statusHtml}</td>
                     <td class="p-4 text-right whitespace-nowrap">${aksiHtml}${waHtml}</td></tr>`;
             });
-            document.getElementById('sppLabelTerkumpul').innerText = `Total Terkumpul: ${formatRp(totalBulan)}`;
-        }
+            document.getElementById('sppLabelTerkumpul').innerText = `Total Terkumpul: ${window.formatRp(totalBulan)}`;
+        };
 
         window.bukaModalBayar = function(id, isEdit = false) {
             const s = window.siswaData.find(x => x.id === id);
@@ -1183,23 +1320,38 @@
             document.getElementById('bayarSppModal').classList.remove('hidden-el');
         };
 
-        document.getElementById('bayarForm').addEventListener('submit', function(e) {
+        document.getElementById('bayarForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            if(!currentUser) return;
             const id = document.getElementById('bSiswaId').value;
             const bln = document.getElementById('bBulan').value;
-            if(!window.sppData[id]) window.sppData[id] = {};
-            window.sppData[id][bln] = {
-                lunas: true,
-                tgl_bayar: document.getElementById('bTgl').value,
-                nominal: Number(document.getElementById('bNominal').value),
-                metode: document.getElementById('bMetode').value
-            };
-            saveData(); tutupModal('bayarSppModal'); showToast('Pembayaran Dicatat!');
+            
+            try {
+                window.setLoading(true, "Mencatat SPP...");
+                const payData = {
+                    lunas: true,
+                    tgl_bayar: document.getElementById('bTgl').value,
+                    nominal: Number(document.getElementById('bNominal').value),
+                    metode: document.getElementById('bMetode').value
+                };
+                const sppUpdate = {}; sppUpdate[bln] = payData;
+                await setDoc(doc(db, `${dbBasePath}/spp`, id), sppUpdate, { merge: true });
+                
+                window.tutupModal('bayarSppModal');
+                window.showToast('Pembayaran Dicatat!');
+            } catch(e) { window.showToast('Gagal Mencatat', 'error'); }
+            finally { window.setLoading(false); }
         });
 
-        window.batalBayar = function(id) {
-            if(window.sppData[id]) delete window.sppData[id][window.currentBulanSpp];
-            saveData(); showToast('Status Dibatalkan', 'error');
+        window.batalBayar = async function(id) {
+            if(!currentUser) return;
+            try {
+                window.setLoading(true, "Membatalkan SPP...");
+                const sppUpdate = {}; sppUpdate[window.currentBulanSpp] = deleteField();
+                await setDoc(doc(db, `${dbBasePath}/spp`, id), sppUpdate, { merge: true });
+                window.showToast('Status Dibatalkan', 'error');
+            } catch(e) { window.showToast('Gagal Membatalkan', 'error'); }
+            finally { window.setLoading(false); }
         };
 
         window.cetakKwitansi = function(id) {
@@ -1211,9 +1363,20 @@
             document.getElementById('kwiUnit').innerText = `${s.unit} / ${s.nis||'-'}`;
             document.getElementById('kwiUntuk').innerText = `Pembayaran SPP Bulan ${window.currentBulanSpp}`;
             document.getElementById('kwiMetode').innerText = `${b.metode} (${b.tgl_bayar})`;
-            document.getElementById('kwiNominal').innerText = formatRp(b.nominal);
+            document.getElementById('kwiNominal').innerText = window.formatRp(b.nominal);
             document.getElementById('kwiTgl').innerText = `Salatiga, ${new Date(b.tgl_bayar).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}`;
             window.print();
+        };
+
+        const excelMapping = {
+            "Nama Lengkap": "nama", "NIS": "nis", "NISN": "nisn", "NIK": "nik", "Jenis Kelamin (Laki-laki/Perempuan)": "jk", "Agama": "agama",
+            "Tempat Lahir": "tempat_lahir", "Tanggal Lahir (YYYY-MM-DD)": "tanggal_lahir", "Email": "email", "No HP/WA": "telp",
+            "Sekolah Asal": "sekolah_asal", "Tanggal Diterima": "tanggal_diterima", "SPP Bulanan": "spp_nominal", "Kantong Belajar": "unit", "Status (Aktif/Lulus/Mutasi)": "status",
+            "No. KK": "kk_nomor", "Alamat KK": "kk_alamat", "RT KK": "kk_rt", "Kelurahan KK": "kk_kelurahan", "Kecamatan KK": "kk_kecamatan", "Kabupaten KK": "kk_kabupaten",
+            "Alamat Domisili": "dom_alamat", "Kelurahan Domisili": "dom_kelurahan", "Kecamatan Domisili": "dom_kecamatan", "Kabupaten Domisili": "dom_kabupaten",
+            "Ayah Nama": "ayah_nama", "Ayah Pekerjaan": "ayah_pekerjaan", "Ayah HP": "ayah_hp",
+            "Ibu Nama": "ibu_nama", "Ibu Pekerjaan": "ibu_pekerjaan", "Ibu HP": "ibu_hp",
+            "Wali Nama": "wali_nama", "Wali Pekerjaan": "wali_pekerjaan", "Wali HP": "wali_hp"
         };
 
         window.exportSppExcel = function() {
@@ -1224,81 +1387,83 @@
             });
             const ws = XLSX.utils.json_to_sheet(dataEx); const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, `SPP ${bln}`);
-            XLSX.writeFile(wb, `Rekap_SPP_${bln}.xlsx`); showToast('Excel Berhasil Diunduh!');
+            XLSX.writeFile(wb, `Rekap_SPP_${bln}.xlsx`); window.showToast('Excel Berhasil Diunduh!');
         };
 
         window.exportSiswaExcel = function() {
-            const dataEx = window.siswaData.map((s, i) => {
-                return {
-                    "No": i+1, "Nama Lengkap": s.nama, "NIS": s.nis, "NISN": s.nisn, "NIK": s.nik, "Jenis Kelamin": s.jk, 
-                    "Tempat Lahir": s.tempat_lahir, "Tgl Lahir": s.tgl_lahir, "Agama": s.agama, "Email": s.email, "No HP Siswa": s.hp,
-                    "Kantong Belajar": s.unit, "Status Siswa": s.status, "Nominal SPP": s.spp_nominal,
-                    "Sekolah Asal": s.sekolah_asal, "Tanggal Diterima": s.tgl_diterima,
-                    "No KK": s.no_kk, "Alamat KK": s.kk_alamat, "RT/RW KK": s.kk_rt_rw, "Kelurahan KK": s.kk_kel, "Kecamatan KK": s.kk_kec, "Kota/Kab KK": s.kk_kota,
-                    "Alamat Domisili": s.dom_alamat, "Kelurahan Dom.": s.dom_kel, "Kecamatan Dom.": s.dom_kec, "Kota/Kab Dom.": s.dom_kota,
-                    "Nama Ayah": s.ayah_nama, "Pekerjaan Ayah": s.ayah_kerja, "HP Ayah": s.ayah_hp,
-                    "Nama Ibu": s.ibu_nama, "Pekerjaan Ibu": s.ibu_kerja, "HP Ibu": s.ibu_hp,
-                    "Nama Wali": s.wali_nama, "Pekerjaan Wali": s.wali_kerja, "HP Wali": s.wali_hp
-                };
+            if(window.siswaData.length === 0) { window.showToast('Data Siswa Kosong', 'error'); return; }
+            
+            const excelData = window.siswaData.map((s, index) => {
+                let row = { "No": index + 1 };
+                for (let header in excelMapping) row[header] = s[excelMapping[header]] || '';
+                return row;
             });
-            const ws = XLSX.utils.json_to_sheet(dataEx); const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Data Siswa');
-            XLSX.writeFile(wb, `Data_Induk_Siswa_PKBM.xlsx`); showToast('Database Diunduh!');
+
+            const worksheet = XLSX.utils.json_to_sheet(excelData); const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, `Data Induk Siswa`);
+            XLSX.writeFile(workbook, `Data_Induk_Siswa_Destiny.xlsx`); window.showToast('Database Diunduh!');
         };
 
         window.bukaModalImport = function() { document.getElementById('importModal').classList.remove('hidden-el'); document.getElementById('importForm').reset(); };
+        
         window.downloadTemplateImport = function() {
-            const sample = [{ 
-                "Nama Lengkap": "Contoh Siswa", "NIS": "1001", "NISN": "000000001", "NIK": "33730000001", "Jenis Kelamin": "Perempuan",
-                "Tempat Lahir": "Salatiga", "Tgl Lahir": "2010-01-01", "Agama": "Kristen", "Email": "contoh@email.com", "No HP Siswa": "0812345678",
-                "Kantong Belajar": "DESTINY - ACE", "Status Siswa": "Aktif", "Nominal SPP": 1500000,
-                "Sekolah Asal": "SMPN 1 Salatiga", "Tanggal Diterima": "2026-07-15",
-                "No KK": "337300012345", "Alamat KK": "Jl. Contoh No. 1", "RT/RW KK": "001/002", "Kelurahan KK": "Kutowinangun", "Kecamatan KK": "Tingkir", "Kota/Kab KK": "Salatiga",
-                "Alamat Domisili": "Sama dengan KK", "Kelurahan Dom.": "", "Kecamatan Dom.": "", "Kota/Kab Dom.": "",
-                "Nama Ayah": "Nama Ayah", "Pekerjaan Ayah": "Wiraswasta", "HP Ayah": "08111111", 
-                "Nama Ibu": "Nama Ibu", "Pekerjaan Ibu": "IRT", "HP Ibu": "08222222",
-                "Nama Wali": "", "Pekerjaan Wali": "", "HP Wali": ""
-            }];
-            const ws = XLSX.utils.json_to_sheet(sample); const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Template');
-            XLSX.writeFile(wb, 'Template_Import_Siswa.xlsx');
+            let templateRow = {};
+            for (let header in excelMapping) {
+                if(header === "Nama Lengkap") templateRow[header] = "Contoh Nama Siswa";
+                else if(header === "Kantong Belajar") templateRow[header] = "DESTINY - ACE";
+                else if(header === "SPP Bulanan") templateRow[header] = 250000;
+                else if(header === "Status (Aktif/Lulus/Mutasi)") templateRow[header] = "Aktif";
+                else templateRow[header] = "";
+            }
+            const worksheet = XLSX.utils.json_to_sheet([templateRow]); const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, `Template`);
+            XLSX.writeFile(workbook, `Template_Import_Siswa.xlsx`);
         };
 
-        document.getElementById('importForm').addEventListener('submit', function(e) {
+        document.getElementById('importForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const f = document.getElementById('fileImport').files[0];
-            if(!f) return;
+            if(!currentUser) return;
+            const fileInput = document.getElementById('fileImport');
+            if(!fileInput.files.length) return;
+
+            window.setLoading(true, "Memproses Excel...");
             const reader = new FileReader();
-            reader.onload = function(e) {
+            
+            reader.onload = async function(e) {
                 try {
                     const data = new Uint8Array(e.target.result);
-                    const wb = XLSX.read(data, {type: 'array'});
-                    const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+                    const workbook = XLSX.read(data, {type: 'array'});
+                    const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+                    if(json.length === 0) throw new Error("Excel kosong");
+
                     let count = 0;
-                    json.forEach(row => {
-                        if(row['Nama Lengkap']) {
-                            window.siswaData.unshift({
-                                id: 's_' + Math.random().toString(36).substr(2, 9),
-                                nama: row['Nama Lengkap'], nis: row['NIS']||'', nisn: row['NISN']||'', nik: row['NIK']||'',
-                                jk: row['Jenis Kelamin']||'Laki-laki', tempat_lahir: row['Tempat Lahir']||'', tgl_lahir: row['Tgl Lahir']||'',
-                                agama: row['Agama']||'', email: row['Email']||'', hp: row['No HP Siswa']||'',
-                                unit: row['Kantong Belajar']||'DESTINY - NASIONAL', status: row['Status Siswa']||'Aktif', spp_nominal: Number(row['Nominal SPP'])||1000000,
-                                sekolah_asal: row['Sekolah Asal']||'', tgl_diterima: row['Tanggal Diterima']||'',
-                                no_kk: row['No KK']||'', kk_alamat: row['Alamat KK']||'', kk_rt_rw: row['RT/RW KK']||'', kk_kel: row['Kelurahan KK']||'', kk_kec: row['Kecamatan KK']||'', kk_kota: row['Kota/Kab KK']||'',
-                                dom_alamat: row['Alamat Domisili']||'', dom_kel: row['Kelurahan Dom.']||'', dom_kec: row['Kecamatan Dom.']||'', dom_kota: row['Kota/Kab Dom.']||'',
-                                ayah_nama: row['Nama Ayah']||'', ayah_kerja: row['Pekerjaan Ayah']||'', ayah_hp: row['HP Ayah']||'',
-                                ibu_nama: row['Nama Ibu']||'', ibu_kerja: row['Pekerjaan Ibu']||'', ibu_hp: row['HP Ibu']||'',
-                                wali_nama: row['Nama Wali']||'', wali_kerja: row['Pekerjaan Wali']||'', wali_hp: row['HP Wali']||''
-                            });
+                    // Chunking untuk Import Massal via Firestore Batch
+                    for(let i=0; i < json.length; i+=250) {
+                        const chunk = json.slice(i, i+250);
+                        const batch = writeBatch(db);
+                        chunk.forEach(row => {
+                            if(!row["Nama Lengkap"]) return; 
+                            const newDocRef = doc(collection(db, `${dbBasePath}/siswa`));
+                            const siswaData = {};
+                            for(let header in excelMapping) {
+                                const dbField = excelMapping[header];
+                                if(row[header] !== undefined) {
+                                    siswaData[dbField] = dbField === 'spp_nominal' ? (Number(row[header]) || 0) : String(row[header]);
+                                }
+                            }
+                            if(!siswaData.unit) siswaData.unit = "DESTINY - NASIONAL";
+                            if(!siswaData.status) siswaData.status = "Aktif";
+                            batch.set(newDocRef, siswaData);
                             count++;
-                        }
-                    });
-                    saveData(); tutupModal('importModal'); showToast(`Berhasil import ${count} data siswa!`);
-                } catch(err) {
-                    showToast('Format Excel tidak valid!', 'error');
-                }
+                        });
+                        await batch.commit();
+                    }
+                    window.showToast(`Berhasil import ${count} data ke Cloud!`);
+                    window.tutupModal('importModal');
+                } catch (err) { window.showToast('Gagal Import: Format Salah', 'error'); console.error(err); } 
+                finally { window.setLoading(false); }
             };
-            reader.readAsArrayBuffer(f);
+            reader.readAsArrayBuffer(fileInput.files[0]);
         });
 
         window.backupDatabase = function() {
@@ -1306,27 +1471,45 @@
             const blob = new Blob([JSON.stringify(dump, null, 2)], {type: 'application/json'});
             const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
             a.download = `Backup_PKBM_${new Date().toISOString().slice(0,10)}.json`; a.click();
-            showToast('Backup JSON Diunduh!');
+            window.showToast('Backup JSON Diunduh!');
         };
 
-        window.restoreDatabase = function() {
+        window.restoreDatabase = async function() {
+            if(!currentUser) return;
             const f = document.getElementById('importBackupFile').files[0];
-            if(!f) return showToast('Pilih file .json terlebih dahulu', 'error');
+            if(!f) return window.showToast('Pilih file .json terlebih dahulu', 'error');
+            
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = async function(e) {
                 try {
                     const d = JSON.parse(e.target.result);
-                    if(d.siswa) window.siswaData = d.siswa;
-                    if(d.units) window.unitData = d.units;
-                    if(d.spp) window.sppData = d.spp;
-                    saveData(); showToast('Database Berhasil Dipulihkan!');
-                } catch(err) { showToast('File backup rusak atau tidak valid!', 'error'); }
+                    window.setLoading(true, "Upload ke Cloud Database...");
+                    
+                    const restoreData = async (colName, dataArray) => {
+                         for(let i=0; i < dataArray.length; i+=250) {
+                             const chunk = dataArray.slice(i, i+250);
+                             const batch = writeBatch(db);
+                             chunk.forEach(item => batch.set(doc(db, `${dbBasePath}/${colName}`, item.id), item));
+                             await batch.commit();
+                         }
+                    };
+                    
+                    if(d.units?.length) await restoreData('units', d.units);
+                    if(d.siswa?.length) await restoreData('siswa', d.siswa);
+                    if(d.spp) {
+                        const sppArr = Object.entries(d.spp).map(([id, data]) => ({ id, ...data }));
+                        if(sppArr.length) await restoreData('spp', sppArr);
+                    }
+                    window.showToast('Database Berhasil Dipulihkan!');
+                } catch(err) { window.showToast('File backup rusak!', 'error'); console.error(err); }
+                finally { window.setLoading(false); document.getElementById('importBackupFile').value = ''; }
             };
             reader.readAsText(f);
         };
 
-        // Inisialisasi Pertama
-        saveData();
+        // Initialize Authentication to trigger Cloud connection
+        initAuth();
+
     </script>
 </body>
 </html>
