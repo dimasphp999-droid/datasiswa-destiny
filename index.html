@@ -443,7 +443,7 @@
     <div id="siswaModal" class="hidden-el fixed inset-0 z-[60] flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto no-print">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl overflow-hidden my-4 flex flex-col max-h-[90vh]">
             <div class="px-6 py-4 bg-slate-900 text-white flex justify-between items-center shrink-0">
-                <h3 id="siswaModalTitle" class="font-bold text-lg">Form Data Induk Siswa</h3>
+                <h3 id="siswaModalTitle" class="font-bold text-lg">Form Data Induk Siswa Lengkap</h3>
                 <button onclick="tutupModal('siswaModal')" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <div class="overflow-y-auto p-6 bg-slate-50">
@@ -451,10 +451,10 @@
                     <input type="hidden" id="formSiswaId">
                     
                     <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                        <h4 class="font-bold text-blue-700 text-sm border-b pb-2 mb-4 uppercase">1. Data Pribadi & Akademik</h4>
+                        <h4 class="font-bold text-blue-700 text-sm border-b pb-2 mb-4 uppercase"><i class="fa-solid fa-user mr-2"></i>1. Identitas Pribadi</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-4">
                             <div class="sm:col-span-2"><label class="block text-xs font-bold text-slate-500 mb-1">Nama Lengkap *</label><input type="text" id="fNama" required class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
-                            <div><label class="block text-xs font-bold text-slate-500 mb-1">NIS</label><input type="text" id="fNis" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                            <div><label class="block text-xs font-bold text-slate-500 mb-1">NIS (Nomor Induk Siswa)</label><input type="text" id="fNis" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
                             <div><label class="block text-xs font-bold text-slate-500 mb-1">NISN</label><input type="text" id="fNisn" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-4">
@@ -465,18 +465,26 @@
                             <div><label class="block text-xs font-bold text-slate-500 mb-1">Tempat Lahir</label><input type="text" id="fTmpLahir" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
                             <div><label class="block text-xs font-bold text-slate-500 mb-1">Tanggal Lahir</label><input type="date" id="fTglLahir" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                             <div><label class="block text-xs font-bold text-slate-500 mb-1">Agama</label>
                                 <select id="fAgama" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"><option value="Islam">Islam</option><option value="Kristen">Kristen</option><option value="Katolik">Katolik</option><option value="Hindu">Hindu</option><option value="Buddha">Buddha</option><option value="Konghucu">Konghucu</option></select>
                             </div>
                             <div><label class="block text-xs font-bold text-slate-500 mb-1">Email Siswa</label><input type="email" id="fEmailSiswa" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
-                            <div><label class="block text-xs font-bold text-slate-500 mb-1">No. Tlp / WA</label><input type="text" id="fHpSiswa" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
-                            <div><label class="block text-xs font-bold text-slate-500 mb-1">Kantong Belajar *</label>
-                                <select id="fUnit" required class="w-full px-3 py-2 border rounded-lg text-sm font-bold text-blue-700 outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50"></select>
-                            </div>
+                            <div class="sm:col-span-2"><label class="block text-xs font-bold text-slate-500 mb-1">No. Tlp / WhatsApp Siswa</label><input type="text" id="fHpSiswa" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                        <h4 class="font-bold text-blue-700 text-sm border-b pb-2 mb-4 uppercase"><i class="fa-solid fa-school mr-2"></i>2. Data Akademik & SPP</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-4">
+                            <div class="sm:col-span-2"><label class="block text-xs font-bold text-slate-500 mb-1">Sekolah Asal (Pindahan / Lanjutan)</label><input type="text" id="fSekolahAsal" placeholder="Nama sekolah sebelumnya" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                            <div class="sm:col-span-2"><label class="block text-xs font-bold text-slate-500 mb-1">Tanggal Diterima di PKBM</label><input type="date" id="fTglDiterima" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                            <div><label class="block text-xs font-bold text-slate-500 mb-1">Status</label>
+                            <div class="sm:col-span-2"><label class="block text-xs font-bold text-slate-500 mb-1">Kantong Belajar (Unit) *</label>
+                                <select id="fUnit" required class="w-full px-3 py-2 border rounded-lg text-sm font-bold text-blue-700 outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50"></select>
+                            </div>
+                            <div><label class="block text-xs font-bold text-slate-500 mb-1">Status Siswa</label>
                                 <select id="fStatus" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"><option value="Aktif">Aktif</option><option value="Baru">Baru</option><option value="Lulus">Lulus</option><option value="Mutasi">Mutasi / Keluar</option></select>
                             </div>
                             <div><label class="block text-xs font-bold text-emerald-600 mb-1">SPP Bulanan (Rp) *</label><input type="number" id="fSppNominal" required class="w-full px-3 py-2 border-emerald-300 border bg-emerald-50 rounded-lg text-sm font-bold text-slate-900 outline-none focus:ring-2 focus:ring-emerald-500"></div>
@@ -484,31 +492,53 @@
                     </div>
 
                     <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                        <h4 class="font-bold text-blue-700 text-sm border-b pb-2 mb-4 uppercase">2. Alamat Sesuai KK</h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div><label class="block text-xs font-bold text-slate-500 mb-1">Alamat Lengkap</label><input type="text" id="fKkAlamat" placeholder="Jalan / Perumahan" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
-                            <div class="flex gap-2">
-                                <div class="w-1/2"><label class="block text-xs font-bold text-slate-500 mb-1">Kelurahan</label><input type="text" id="fKkKel" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
-                                <div class="w-1/2"><label class="block text-xs font-bold text-slate-500 mb-1">Kecamatan</label><input type="text" id="fKkKec" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                        <h4 class="font-bold text-blue-700 text-sm border-b pb-2 mb-4 uppercase"><i class="fa-solid fa-map-location-dot mr-2"></i>3. Data Alamat Tempat Tinggal</h4>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <h5 class="text-xs font-bold text-slate-800 bg-slate-100 p-2 rounded">Alamat Sesuai Kartu Keluarga (KK)</h5>
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">No. Kartu Keluarga (KK)</label><input type="text" id="fNoKk" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">Alamat Jalan / Perumahan / Desa</label><input type="text" id="fKkAlamat" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div><label class="block text-xs font-bold text-slate-500 mb-1">RT / RW</label><input type="text" id="fKkRtRw" placeholder="001/002" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                    <div><label class="block text-xs font-bold text-slate-500 mb-1">Kelurahan</label><input type="text" id="fKkKel" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div><label class="block text-xs font-bold text-slate-500 mb-1">Kecamatan</label><input type="text" id="fKkKec" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                    <div><label class="block text-xs font-bold text-slate-500 mb-1">Kota / Kabupaten</label><input type="text" id="fKkKota" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                </div>
                             </div>
-                            <div class="sm:col-span-2"><label class="block text-xs font-bold text-slate-500 mb-1">Kota/Kabupaten</label><input type="text" id="fKkKota" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                            <div class="space-y-4">
+                                <h5 class="text-xs font-bold text-slate-800 bg-slate-100 p-2 rounded">Alamat Domisili (Tempat Tinggal Saat Ini)</h5>
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">Alamat Jalan / Perumahan / Desa</label><input type="text" id="fDomAlamat" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                <div><label class="block text-xs font-bold text-slate-500 mb-1">Kelurahan Domisili</label><input type="text" id="fDomKel" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div><label class="block text-xs font-bold text-slate-500 mb-1">Kecamatan</label><input type="text" id="fDomKec" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                    <div><label class="block text-xs font-bold text-slate-500 mb-1">Kota / Kabupaten</label><input type="text" id="fDomKota" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                        <h4 class="font-bold text-blue-700 text-sm border-b pb-2 mb-4 uppercase">3. Data Orang Tua / Wali</h4>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <h4 class="font-bold text-blue-700 text-sm border-b pb-2 mb-4 uppercase"><i class="fa-solid fa-users mr-2"></i>4. Data Orang Tua / Wali</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div class="space-y-3 bg-blue-50/50 p-4 rounded-xl border border-blue-100">
-                                <h5 class="text-xs font-bold text-blue-800 border-b border-blue-200 pb-1"><i class="fa-solid fa-user-tie mr-1"></i> Ayah / Wali</h5>
-                                <div><input type="text" id="fAyahNama" placeholder="Nama Ayah / Wali" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
-                                <div><input type="text" id="fAyahKerja" placeholder="Pekerjaan" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
-                                <div><input type="text" id="fAyahHp" placeholder="No. Tlp / WA (Penting)" class="w-full px-3 py-2 border border-blue-300 rounded-lg text-sm font-bold text-blue-700 outline-none focus:ring-2 focus:ring-blue-500 bg-white"></div>
+                                <h5 class="text-xs font-bold text-blue-800 border-b border-blue-200 pb-1"><i class="fa-solid fa-user-tie mr-1"></i> Data Ayah</h5>
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Nama Ayah</label><input type="text" id="fAyahNama" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Pekerjaan</label><input type="text" id="fAyahKerja" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">No. Tlp / WhatsApp (Penting)</label><input type="text" id="fAyahHp" class="w-full px-3 py-2 border border-blue-300 rounded-lg text-sm font-bold text-blue-700 outline-none focus:ring-2 focus:ring-blue-500 bg-white"></div>
                             </div>
                             <div class="space-y-3 bg-pink-50/50 p-4 rounded-xl border border-pink-100">
-                                <h5 class="text-xs font-bold text-pink-800 border-b border-pink-200 pb-1"><i class="fa-solid fa-user mr-1"></i> Ibu</h5>
-                                <div><input type="text" id="fIbuNama" placeholder="Nama Ibu" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-pink-500"></div>
-                                <div><input type="text" id="fIbuKerja" placeholder="Pekerjaan" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-pink-500"></div>
-                                <div><input type="text" id="fIbuHp" placeholder="No. Tlp / WA" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-pink-500 bg-white"></div>
+                                <h5 class="text-xs font-bold text-pink-800 border-b border-pink-200 pb-1"><i class="fa-solid fa-user mr-1"></i> Data Ibu</h5>
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Nama Ibu</label><input type="text" id="fIbuNama" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-pink-500"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Pekerjaan</label><input type="text" id="fIbuKerja" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-pink-500"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">No. Tlp / WhatsApp</label><input type="text" id="fIbuHp" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-pink-500 bg-white"></div>
+                            </div>
+                            <div class="space-y-3 bg-amber-50/50 p-4 rounded-xl border border-amber-100">
+                                <h5 class="text-xs font-bold text-amber-800 border-b border-amber-200 pb-1"><i class="fa-solid fa-hands-holding-child mr-1"></i> Data Wali (Jika Ada)</h5>
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Nama Wali</label><input type="text" id="fWaliNama" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-amber-500"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">Pekerjaan</label><input type="text" id="fWaliKerja" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-amber-500"></div>
+                                <div><label class="block text-[10px] font-bold text-slate-500 mb-1">No. Tlp / WhatsApp</label><input type="text" id="fWaliHp" class="w-full px-3 py-2 border rounded-lg text-sm outline-none focus:ring-2 focus:ring-amber-500 bg-white"></div>
                             </div>
                         </div>
                     </div>
@@ -843,25 +873,45 @@
             document.getElementById('formSiswaId').value = s.id;
             
             // Map keys
-            const fields = ['fNama','fNis','fNisn','fNik','fJk','fTmpLahir','fTglLahir','fAgama','fEmailSiswa','fHpSiswa','fUnit','fStatus','fSppNominal','fKkAlamat','fKkKel','fKkKec','fKkKota','fAyahNama','fAyahKerja','fAyahHp','fIbuNama','fIbuKerja','fIbuHp'];
-            fields.forEach(k => {
-                const el = document.getElementById(k);
-                if(el) {
-                    const dbKey = k.replace('f','').replace(/([A-Z])/g, "_$1").toLowerCase().substring(1); 
-                    // Manual override for explicit matching
-                    let val = '';
-                    if(k==='fNama') val = s.nama; else if(k==='fNis') val = s.nis; else if(k==='fNisn') val = s.nisn;
-                    else if(k==='fNik') val = s.nik; else if(k==='fJk') val = s.jk; else if(k==='fTmpLahir') val = s.tempat_lahir;
-                    else if(k==='fTglLahir') val = s.tgl_lahir; else if(k==='fAgama') val = s.agama; else if(k==='fEmailSiswa') val = s.email;
-                    else if(k==='fHpSiswa') val = s.hp; else if(k==='fUnit') val = s.unit; else if(k==='fStatus') val = s.status;
-                    else if(k==='fSppNominal') val = s.spp_nominal; else if(k==='fKkAlamat') val = s.kk_alamat;
-                    else if(k==='fKkKel') val = s.kk_kel; else if(k==='fKkKec') val = s.kk_kec; else if(k==='fKkKota') val = s.kk_kota;
-                    else if(k==='fAyahNama') val = s.ayah_nama; else if(k==='fAyahKerja') val = s.ayah_kerja; else if(k==='fAyahHp') val = s.ayah_hp;
-                    else if(k==='fIbuNama') val = s.ibu_nama; else if(k==='fIbuKerja') val = s.ibu_kerja; else if(k==='fIbuHp') val = s.ibu_hp;
-                    
-                    el.value = val !== undefined ? val : (k==='fSppNominal' ? 0 : '');
-                }
-            });
+            document.getElementById('fNama').value = s.nama || '';
+            document.getElementById('fNis').value = s.nis || '';
+            document.getElementById('fNisn').value = s.nisn || '';
+            document.getElementById('fNik').value = s.nik || '';
+            document.getElementById('fJk').value = s.jk || 'Laki-laki';
+            document.getElementById('fTmpLahir').value = s.tempat_lahir || '';
+            document.getElementById('fTglLahir').value = s.tgl_lahir || '';
+            document.getElementById('fAgama').value = s.agama || 'Islam';
+            document.getElementById('fEmailSiswa').value = s.email || '';
+            document.getElementById('fHpSiswa').value = s.hp || '';
+            
+            document.getElementById('fUnit').value = s.unit || '';
+            document.getElementById('fStatus').value = s.status || 'Aktif';
+            document.getElementById('fSppNominal').value = s.spp_nominal || 0;
+            document.getElementById('fSekolahAsal').value = s.sekolah_asal || '';
+            document.getElementById('fTglDiterima').value = s.tgl_diterima || '';
+            
+            document.getElementById('fNoKk').value = s.no_kk || '';
+            document.getElementById('fKkAlamat').value = s.kk_alamat || '';
+            document.getElementById('fKkRtRw').value = s.kk_rt_rw || '';
+            document.getElementById('fKkKel').value = s.kk_kel || '';
+            document.getElementById('fKkKec').value = s.kk_kec || '';
+            document.getElementById('fKkKota').value = s.kk_kota || '';
+            
+            document.getElementById('fDomAlamat').value = s.dom_alamat || '';
+            document.getElementById('fDomKel').value = s.dom_kel || '';
+            document.getElementById('fDomKec').value = s.dom_kec || '';
+            document.getElementById('fDomKota').value = s.dom_kota || '';
+            
+            document.getElementById('fAyahNama').value = s.ayah_nama || '';
+            document.getElementById('fAyahKerja').value = s.ayah_kerja || '';
+            document.getElementById('fAyahHp').value = s.ayah_hp || '';
+            document.getElementById('fIbuNama').value = s.ibu_nama || '';
+            document.getElementById('fIbuKerja').value = s.ibu_kerja || '';
+            document.getElementById('fIbuHp').value = s.ibu_hp || '';
+            document.getElementById('fWaliNama').value = s.wali_nama || '';
+            document.getElementById('fWaliKerja').value = s.wali_kerja || '';
+            document.getElementById('fWaliHp').value = s.wali_hp || '';
+
             document.getElementById('siswaModalTitle').innerText = 'Edit Data Siswa';
             document.getElementById('siswaModal').classList.remove('hidden-el');
         };
@@ -876,10 +926,14 @@
                 nik: document.getElementById('fNik').value, jk: document.getElementById('fJk').value, tempat_lahir: document.getElementById('fTmpLahir').value,
                 tgl_lahir: document.getElementById('fTglLahir').value, agama: document.getElementById('fAgama').value, email: document.getElementById('fEmailSiswa').value,
                 hp: document.getElementById('fHpSiswa').value, unit: document.getElementById('fUnit').value, status: document.getElementById('fStatus').value,
-                spp_nominal: Number(document.getElementById('fSppNominal').value) || 0, kk_alamat: document.getElementById('fKkAlamat').value,
+                spp_nominal: Number(document.getElementById('fSppNominal').value) || 0, 
+                sekolah_asal: document.getElementById('fSekolahAsal').value, tgl_diterima: document.getElementById('fTglDiterima').value,
+                no_kk: document.getElementById('fNoKk').value, kk_alamat: document.getElementById('fKkAlamat').value, kk_rt_rw: document.getElementById('fKkRtRw').value,
                 kk_kel: document.getElementById('fKkKel').value, kk_kec: document.getElementById('fKkKec').value, kk_kota: document.getElementById('fKkKota').value,
+                dom_alamat: document.getElementById('fDomAlamat').value, dom_kel: document.getElementById('fDomKel').value, dom_kec: document.getElementById('fDomKec').value, dom_kota: document.getElementById('fDomKota').value,
                 ayah_nama: document.getElementById('fAyahNama').value, ayah_kerja: document.getElementById('fAyahKerja').value, ayah_hp: document.getElementById('fAyahHp').value,
-                ibu_nama: document.getElementById('fIbuNama').value, ibu_kerja: document.getElementById('fIbuKerja').value, ibu_hp: document.getElementById('fIbuHp').value
+                ibu_nama: document.getElementById('fIbuNama').value, ibu_kerja: document.getElementById('fIbuKerja').value, ibu_hp: document.getElementById('fIbuHp').value,
+                wali_nama: document.getElementById('fWaliNama').value, wali_kerja: document.getElementById('fWaliKerja').value, wali_hp: document.getElementById('fWaliHp').value
             };
             
             const idx = window.siswaData.findIndex(x => x.id === id);
@@ -909,30 +963,42 @@
                     </div>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm">
-                            <h5 class="font-bold text-slate-800 border-b pb-2 mb-3"><i class="fa-solid fa-address-card mr-1"></i> Data Pribadi</h5>
-                            <table class="w-full text-xs">
-                                <tr><td class="text-slate-500 py-1 w-1/3">NISN / NIK</td><td class="font-bold text-slate-900">${s.nisn||'-'} / ${s.nik||'-'}</td></tr>
-                                <tr><td class="text-slate-500 py-1">T.T.L</td><td class="font-bold text-slate-900">${s.tempat_lahir||'-'}, ${s.tgl_lahir||'-'}</td></tr>
-                                <tr><td class="text-slate-500 py-1">Kelamin</td><td class="font-bold text-slate-900">${s.jk||'-'}</td></tr>
-                                <tr><td class="text-slate-500 py-1">Agama</td><td class="font-bold text-slate-900">${s.agama||'-'}</td></tr>
-                                <tr><td class="text-slate-500 py-1">Kontak</td><td class="font-bold text-slate-900">${s.hp||'-'} | ${s.email||'-'}</td></tr>
-                                <tr><td class="text-slate-500 py-1 font-bold pt-3">SPP Bulanan</td><td class="font-bold text-emerald-700 pt-3">${formatRp(s.spp_nominal)}</td></tr>
-                            </table>
-                        </div>
                         <div class="space-y-4">
                             <div class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm">
-                                <h5 class="font-bold text-slate-800 border-b pb-2 mb-3"><i class="fa-solid fa-map-location-dot mr-1"></i> Alamat Sesuai KK</h5>
-                                <p class="text-xs text-slate-900 font-bold mb-1">${s.kk_alamat||'-'}</p>
-                                <p class="text-[10px] text-slate-600">${s.kk_kel||'-'}, ${s.kk_kec||'-'}</p>
-                                <p class="text-[10px] text-slate-600 font-bold">${s.kk_kota||'-'}</p>
+                                <h5 class="font-bold text-slate-800 border-b pb-2 mb-3"><i class="fa-solid fa-address-card mr-1"></i> Data Pribadi & Akademik</h5>
+                                <table class="w-full text-xs">
+                                    <tr><td class="text-slate-500 py-1 w-1/3">NISN / NIK</td><td class="font-bold text-slate-900">${s.nisn||'-'} / ${s.nik||'-'}</td></tr>
+                                    <tr><td class="text-slate-500 py-1">T.T.L</td><td class="font-bold text-slate-900">${s.tempat_lahir||'-'}, ${s.tgl_lahir||'-'}</td></tr>
+                                    <tr><td class="text-slate-500 py-1">Kelamin</td><td class="font-bold text-slate-900">${s.jk||'-'}</td></tr>
+                                    <tr><td class="text-slate-500 py-1">Agama</td><td class="font-bold text-slate-900">${s.agama||'-'}</td></tr>
+                                    <tr><td class="text-slate-500 py-1">Kontak</td><td class="font-bold text-slate-900">${s.hp||'-'} | ${s.email||'-'}</td></tr>
+                                    <tr><td class="text-slate-500 py-1 border-t mt-2 pt-2">Sekolah Asal</td><td class="font-bold text-slate-900 border-t mt-2 pt-2">${s.sekolah_asal||'-'}</td></tr>
+                                    <tr><td class="text-slate-500 py-1">Tgl Diterima</td><td class="font-bold text-slate-900">${s.tgl_diterima||'-'}</td></tr>
+                                    <tr><td class="text-slate-500 py-1 font-bold pt-3">SPP Bulanan</td><td class="font-bold text-emerald-700 pt-3">${formatRp(s.spp_nominal)}</td></tr>
+                                </table>
                             </div>
+                            <div class="bg-white p-4 border border-slate-200 rounded-xl shadow-sm">
+                                <h5 class="font-bold text-slate-800 border-b pb-2 mb-3"><i class="fa-solid fa-map-location-dot mr-1"></i> Informasi Alamat</h5>
+                                <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Alamat Sesuai KK (No. ${s.no_kk||'-'})</p>
+                                <p class="text-xs text-slate-900 font-bold mb-1">${s.kk_alamat||'-'} RT/RW ${s.kk_rt_rw||'-'}</p>
+                                <p class="text-[10px] text-slate-600 mb-3">${s.kk_kel||'-'}, Kec. ${s.kk_kec||'-'}, ${s.kk_kota||'-'}</p>
+                                
+                                <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Alamat Domisili</p>
+                                <p class="text-xs text-slate-900 font-bold mb-1">${s.dom_alamat||'-'}</p>
+                                <p class="text-[10px] text-slate-600">${s.dom_kel||'-'}, Kec. ${s.dom_kec||'-'}, ${s.dom_kota||'-'}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
                             <div class="bg-blue-50 p-4 border border-blue-100 rounded-xl shadow-sm">
-                                <h5 class="font-bold text-blue-800 border-b border-blue-200 pb-2 mb-3"><i class="fa-solid fa-users mr-1"></i> Data Orang Tua</h5>
+                                <h5 class="font-bold text-blue-800 border-b border-blue-200 pb-2 mb-3"><i class="fa-solid fa-users mr-1"></i> Data Orang Tua & Wali</h5>
                                 <p class="text-xs text-blue-900 font-bold">Ayah: ${s.ayah_nama||'-'}</p>
-                                <p class="text-[10px] text-blue-700 mb-2">Kerja: ${s.ayah_kerja||'-'} | HP: <b>${s.ayah_hp||'-'}</b></p>
-                                <p class="text-xs text-pink-700 font-bold border-t border-blue-100 pt-2">Ibu: ${s.ibu_nama||'-'}</p>
-                                <p class="text-[10px] text-pink-600">Kerja: ${s.ibu_kerja||'-'} | HP: <b>${s.ibu_hp||'-'}</b></p>
+                                <p class="text-[10px] text-blue-700 mb-3">Kerja: ${s.ayah_kerja||'-'} | HP: <b>${s.ayah_hp||'-'}</b></p>
+                                
+                                <p class="text-xs text-pink-700 font-bold border-t border-blue-100 pt-3">Ibu: ${s.ibu_nama||'-'}</p>
+                                <p class="text-[10px] text-pink-600 mb-3">Kerja: ${s.ibu_kerja||'-'} | HP: <b>${s.ibu_hp||'-'}</b></p>
+                                
+                                <p class="text-xs text-amber-700 font-bold border-t border-blue-100 pt-3">Wali: ${s.wali_nama||'-'}</p>
+                                <p class="text-[10px] text-amber-600">Kerja: ${s.wali_kerja||'-'} | HP: <b>${s.wali_hp||'-'}</b></p>
                             </div>
                         </div>
                     </div>
@@ -1140,7 +1206,7 @@
             const s = window.siswaData.find(x => x.id === id);
             const b = window.sppData[id][window.currentBulanSpp];
             document.getElementById('kwiNo').innerText = `KWI-${Math.floor(Math.random()*90000)+10000}`;
-            document.getElementById('kwiOrtu').innerText = s.ayah_nama || s.ibu_nama || 'Wali Siswa';
+            document.getElementById('kwiOrtu').innerText = s.ayah_nama || s.ibu_nama || s.wali_nama || 'Wali Siswa';
             document.getElementById('kwiSiswa').innerText = s.nama;
             document.getElementById('kwiUnit').innerText = `${s.unit} / ${s.nis||'-'}`;
             document.getElementById('kwiUntuk').innerText = `Pembayaran SPP Bulan ${window.currentBulanSpp}`;
@@ -1167,9 +1233,12 @@
                     "No": i+1, "Nama Lengkap": s.nama, "NIS": s.nis, "NISN": s.nisn, "NIK": s.nik, "Jenis Kelamin": s.jk, 
                     "Tempat Lahir": s.tempat_lahir, "Tgl Lahir": s.tgl_lahir, "Agama": s.agama, "Email": s.email, "No HP Siswa": s.hp,
                     "Kantong Belajar": s.unit, "Status Siswa": s.status, "Nominal SPP": s.spp_nominal,
-                    "Alamat KK": s.kk_alamat, "Kelurahan": s.kk_kel, "Kecamatan": s.kk_kec, "Kota/Kab": s.kk_kota,
+                    "Sekolah Asal": s.sekolah_asal, "Tanggal Diterima": s.tgl_diterima,
+                    "No KK": s.no_kk, "Alamat KK": s.kk_alamat, "RT/RW KK": s.kk_rt_rw, "Kelurahan KK": s.kk_kel, "Kecamatan KK": s.kk_kec, "Kota/Kab KK": s.kk_kota,
+                    "Alamat Domisili": s.dom_alamat, "Kelurahan Dom.": s.dom_kel, "Kecamatan Dom.": s.dom_kec, "Kota/Kab Dom.": s.dom_kota,
                     "Nama Ayah": s.ayah_nama, "Pekerjaan Ayah": s.ayah_kerja, "HP Ayah": s.ayah_hp,
-                    "Nama Ibu": s.ibu_nama, "Pekerjaan Ibu": s.ibu_kerja, "HP Ibu": s.ibu_hp
+                    "Nama Ibu": s.ibu_nama, "Pekerjaan Ibu": s.ibu_kerja, "HP Ibu": s.ibu_hp,
+                    "Nama Wali": s.wali_nama, "Pekerjaan Wali": s.wali_kerja, "HP Wali": s.wali_hp
                 };
             });
             const ws = XLSX.utils.json_to_sheet(dataEx); const wb = XLSX.utils.book_new();
@@ -1182,10 +1251,13 @@
             const sample = [{ 
                 "Nama Lengkap": "Contoh Siswa", "NIS": "1001", "NISN": "000000001", "NIK": "33730000001", "Jenis Kelamin": "Perempuan",
                 "Tempat Lahir": "Salatiga", "Tgl Lahir": "2010-01-01", "Agama": "Kristen", "Email": "contoh@email.com", "No HP Siswa": "0812345678",
-                "Kantong Belajar": "DESTINY - ACE", "Status Siswa": "Aktif", "Nominal SPP": 1500000, 
-                "Alamat KK": "Jl. Contoh No. 1", "Kelurahan": "Kelurahan", "Kecamatan": "Kecamatan", "Kota/Kab": "Salatiga",
+                "Kantong Belajar": "DESTINY - ACE", "Status Siswa": "Aktif", "Nominal SPP": 1500000,
+                "Sekolah Asal": "SMPN 1 Salatiga", "Tanggal Diterima": "2026-07-15",
+                "No KK": "337300012345", "Alamat KK": "Jl. Contoh No. 1", "RT/RW KK": "001/002", "Kelurahan KK": "Kutowinangun", "Kecamatan KK": "Tingkir", "Kota/Kab KK": "Salatiga",
+                "Alamat Domisili": "Sama dengan KK", "Kelurahan Dom.": "", "Kecamatan Dom.": "", "Kota/Kab Dom.": "",
                 "Nama Ayah": "Nama Ayah", "Pekerjaan Ayah": "Wiraswasta", "HP Ayah": "08111111", 
-                "Nama Ibu": "Nama Ibu", "Pekerjaan Ibu": "IRT", "HP Ibu": "08222222"
+                "Nama Ibu": "Nama Ibu", "Pekerjaan Ibu": "IRT", "HP Ibu": "08222222",
+                "Nama Wali": "", "Pekerjaan Wali": "", "HP Wali": ""
             }];
             const ws = XLSX.utils.json_to_sheet(sample); const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, 'Template');
@@ -1211,9 +1283,12 @@
                                 jk: row['Jenis Kelamin']||'Laki-laki', tempat_lahir: row['Tempat Lahir']||'', tgl_lahir: row['Tgl Lahir']||'',
                                 agama: row['Agama']||'', email: row['Email']||'', hp: row['No HP Siswa']||'',
                                 unit: row['Kantong Belajar']||'DESTINY - NASIONAL', status: row['Status Siswa']||'Aktif', spp_nominal: Number(row['Nominal SPP'])||1000000,
-                                kk_alamat: row['Alamat KK']||'', kk_kel: row['Kelurahan']||'', kk_kec: row['Kecamatan']||'', kk_kota: row['Kota/Kab']||'',
+                                sekolah_asal: row['Sekolah Asal']||'', tgl_diterima: row['Tanggal Diterima']||'',
+                                no_kk: row['No KK']||'', kk_alamat: row['Alamat KK']||'', kk_rt_rw: row['RT/RW KK']||'', kk_kel: row['Kelurahan KK']||'', kk_kec: row['Kecamatan KK']||'', kk_kota: row['Kota/Kab KK']||'',
+                                dom_alamat: row['Alamat Domisili']||'', dom_kel: row['Kelurahan Dom.']||'', dom_kec: row['Kecamatan Dom.']||'', dom_kota: row['Kota/Kab Dom.']||'',
                                 ayah_nama: row['Nama Ayah']||'', ayah_kerja: row['Pekerjaan Ayah']||'', ayah_hp: row['HP Ayah']||'',
-                                ibu_nama: row['Nama Ibu']||'', ibu_kerja: row['Pekerjaan Ibu']||'', ibu_hp: row['HP Ibu']||''
+                                ibu_nama: row['Nama Ibu']||'', ibu_kerja: row['Pekerjaan Ibu']||'', ibu_hp: row['HP Ibu']||'',
+                                wali_nama: row['Nama Wali']||'', wali_kerja: row['Pekerjaan Wali']||'', wali_hp: row['HP Wali']||''
                             });
                             count++;
                         }
