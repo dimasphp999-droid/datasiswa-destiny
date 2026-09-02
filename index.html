@@ -665,6 +665,7 @@
         window.currentBulanSpp = 'Juli';
         let confirmAction = null;
         let currentUser = null;
+        let isDataLoaded = false; // Penanda agar data tidak ditarik ganda
 
         // UI Helpers
         window.formatRp = (num) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(num || 0);
@@ -708,7 +709,9 @@
                     await signInAnonymously(auth);
                 }
             } catch (error) { 
-                window.showToast("Gagal Otentikasi Cloud", "error"); console.error(error); 
+                console.error("Auth gagal, beralih ke mode publik:", error); 
+                // Tetap panggil fungsi load data jika auth lambat/gagal
+                loadDataFromFirestore();
             }
         }
 
@@ -717,18 +720,15 @@
             const user = document.getElementById('loginUsername').value;
             const pass = document.getElementById('loginPassword').value;
             
-            // Cek apabila mesin Firebase belum siap memuat data (currentUser masih null)
-            if (!currentUser) {
-                window.showToast('Menyambungkan ke Cloud Database, harap tunggu 2 detik...', 'error');
-                return;
-            }
-
             if (user === 'admin' && pass === 'admin') {
                 document.getElementById('loginScreen').classList.add('hidden-el');
                 document.getElementById('mainApp').classList.remove('hidden-el');
                 document.body.classList.remove('overflow-hidden');
                 window.showToast('Login berhasil! Tersambung ke Cloud.');
                 document.getElementById('loginForm').reset();
+                
+                // Paksa pemuatan data (bypass block) saat berhasil masuk
+                loadDataFromFirestore();
             } else { 
                 window.showToast('Username atau password salah!', 'error'); 
             }
@@ -756,6 +756,9 @@
         }
 
         function loadDataFromFirestore() {
+            if (isDataLoaded) return; // Cegah tarikan data ganda jika sudah dipanggil
+            isDataLoaded = true;
+
             onSnapshot(baseSiswaCol, (snapshot) => {
                 window.siswaData = [];
                 snapshot.forEach(d => window.siswaData.push({ id: d.id, ...d.data() }));
