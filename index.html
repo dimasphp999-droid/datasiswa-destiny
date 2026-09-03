@@ -119,7 +119,7 @@
                     <label class="block text-sm font-bold text-slate-700 mb-1">Username / Email</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fa-solid fa-user text-slate-400"></i></div>
-                        <input type="text" id="loginUsername" required class="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 focus:bg-white text-sm" placeholder="Ketik: admin">
+                        <input type="email" id="loginUsername" required class="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition bg-slate-50 focus:bg-white text-sm" placeholder="Contoh: admin@pkbm.com">
                     </div>
                 </div>
                 <div>
@@ -645,19 +645,26 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection, writeBatch, deleteField } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global State & Config
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : { projectId: "dummy" };
+        // Menggunakan konfigurasi asli dari project datasiswa-destiny Anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyCDTgLuGJc0vILZuX-BN0T9txK_F1XRTRE",
+            authDomain: "datasiswa-destiny.firebaseapp.com",
+            projectId: "datasiswa-destiny",
+            storageBucket: "datasiswa-destiny.firebasestorage.app",
+            messagingSenderId: "856973867512",
+            appId: "1:856973867512:web:6af843094d7a7296a5fe0d"
+        };
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const baseSiswaCol = collection(db, 'artifacts', appId, 'public', 'data', 'siswa');
-        const baseUnitsCol = collection(db, 'artifacts', appId, 'public', 'data', 'units');
-        const baseSppCol = collection(db, 'artifacts', appId, 'public', 'data', 'spp');
+        // Data sekarang akan tersimpan rapi di root collection database Anda
+        const baseSiswaCol = collection(db, 'siswa');
+        const baseUnitsCol = collection(db, 'units');
+        const baseSppCol = collection(db, 'spp');
 
         window.siswaData = [];
         window.unitData = [];
@@ -701,45 +708,39 @@
             }
         };
 
-        async function initializeSystem() {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) { 
-                console.error("Auth initialization issue:", error); 
-                // For resilient experience in previews, we proceed safely.
-            }
-        }
-
-        window.prosesLogin = function(e) {
+        window.prosesLogin = async function(e) {
             e.preventDefault();
-            const user = document.getElementById('loginUsername').value;
+            const email = document.getElementById('loginUsername').value;
             const pass = document.getElementById('loginPassword').value;
             
-            if (user === 'admin' && pass === 'admin') {
+            try {
+                // Melakukan autentikasi sungguhan ke Firebase dengan Email & Password
+                await signInWithEmailAndPassword(auth, email, pass);
+                
                 document.getElementById('loginScreen').classList.add('hidden-el');
                 document.getElementById('mainApp').classList.remove('hidden-el');
                 document.body.classList.remove('overflow-hidden');
-                window.showToast('Login berhasil! Tersambung ke Cloud.');
+                window.showToast('Login berhasil! Terhubung ke Database Anda.');
                 document.getElementById('loginForm').reset();
-                
-                // Trigger load if user bypasses fast
-                loadDataFromFirestore();
-            } else { 
-                window.showToast('Username atau password salah!', 'error'); 
+            } catch (error) { 
+                console.error("Login Gagal:", error); 
+                window.showToast('Email atau password salah!', 'error'); 
             }
         };
 
-        window.prosesLogout = function() {
-            document.getElementById('loginScreen').classList.remove('hidden-el');
-            document.getElementById('mainApp').classList.add('hidden-el');
-            document.body.classList.add('overflow-hidden');
-            document.getElementById('loginPassword').type = 'password';
-            document.getElementById('eyeIcon').className = 'fa-regular fa-eye';
-            window.showToast('Berhasil Keluar');
+        window.prosesLogout = async function() {
+            try {
+                await signOut(auth);
+                document.getElementById('loginScreen').classList.remove('hidden-el');
+                document.getElementById('mainApp').classList.add('hidden-el');
+                document.body.classList.add('overflow-hidden');
+                document.getElementById('loginPassword').type = 'password';
+                document.getElementById('eyeIcon').className = 'fa-regular fa-eye';
+                isDataLoaded = false;
+                window.showToast('Berhasil Keluar');
+            } catch (error) {
+                window.showToast('Gagal memproses logout', 'error');
+            }
         };
 
         async function seedDefaultUnitsIfNeeded() {
@@ -782,7 +783,16 @@
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             if (user) {
+                // Buka aplikasi jika sudah berhasil login/sesi tersimpan
+                document.getElementById('loginScreen').classList.add('hidden-el');
+                document.getElementById('mainApp').classList.remove('hidden-el');
+                document.body.classList.remove('overflow-hidden');
                 loadDataFromFirestore();
+            } else {
+                // Tampilkan halaman login jika belum
+                document.getElementById('loginScreen').classList.remove('hidden-el');
+                document.getElementById('mainApp').classList.add('hidden-el');
+                document.body.classList.add('overflow-hidden');
             }
         });
 
@@ -1288,8 +1298,6 @@
             };
             reader.readAsText(f);
         };
-
-        initializeSystem();
     </script>
 </body>
 </html>
