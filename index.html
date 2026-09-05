@@ -37,8 +37,8 @@
 
         @media print {
             body * { visibility: hidden; }
-            #kwitansiPrintArea, #kwitansiPrintArea *, #kumulatifPrintArea, #kumulatifPrintArea * { visibility: visible; }
-            #kwitansiPrintArea, #kumulatifPrintArea { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
+            #kwitansiPrintArea, #kwitansiPrintArea *, #kumulatifPrintArea, #kumulatifPrintArea *, #kartuSppPrintArea, #kartuSppPrintArea * { visibility: visible; }
+            #kwitansiPrintArea, #kumulatifPrintArea, #kartuSppPrintArea { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; }
             .no-print { display: none !important; }
         }
     </style>
@@ -113,6 +113,62 @@
         </table>
     </div>
 
+    <!-- KARTU SPP PRINT AREA (CETAK RESMI) -->
+    <div id="kartuSppPrintArea" class="hidden-el bg-white border-2 border-slate-800 p-8 rounded-xl max-w-4xl mx-auto mt-6">
+        <div class="flex justify-between items-start border-b-2 border-slate-800 pb-4 mb-6">
+            <div>
+                <h1 class="text-2xl font-black text-slate-900 uppercase tracking-wide">PKBM Destiny Institute</h1>
+                <p class="text-sm font-semibold text-slate-700">Pusat Kegiatan Belajar Masyarakat • Kota Salatiga</p>
+                <p class="text-xs text-slate-500 font-bold mt-1">KARTU PEMBAYARAN SPP DIGITAL (TAHUN AJARAN 2025/2026)</p>
+            </div>
+            <div class="text-right border-l-2 border-slate-800 pl-6">
+                <p class="text-[10px] font-bold text-slate-500 uppercase">Status Kelunasan</p>
+                <p class="text-lg font-black text-slate-900" id="printKartuSppStatusBadge">-</p>
+                <p class="text-xs text-slate-500 font-bold" id="printKartuLunasRatio">0 / 12 Bulan</p>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-lg border border-slate-300 mb-6 text-xs">
+            <div class="space-y-1.5">
+                <div class="flex"><span class="w-32 font-bold text-slate-600">Nama Lengkap</span><span class="w-3">:</span><span class="font-bold text-slate-900 text-sm" id="printKartuNama">-</span></div>
+                <div class="flex"><span class="w-32 font-bold text-slate-600">NIS / NISN</span><span class="w-3">:</span><span id="printKartuNis">-</span></div>
+                <div class="flex"><span class="w-32 font-bold text-slate-600">Kantong Belajar</span><span class="w-3">:</span><span class="font-bold text-blue-700" id="printKartuUnit">-</span></div>
+                <div class="flex"><span class="w-32 font-bold text-slate-600">Status Siswa</span><span class="w-3">:</span><span id="printKartuStatusSiswa">-</span></div>
+            </div>
+            <div class="space-y-1.5">
+                <div class="flex"><span class="w-36 font-bold text-slate-600">Orang Tua / Wali</span><span class="w-3">:</span><span class="font-bold text-slate-800" id="printKartuOrtu">-</span></div>
+                <div class="flex"><span class="w-36 font-bold text-slate-600">No. HP Orang Tua</span><span class="w-3">:</span><span id="printKartuHp">-</span></div>
+                <div class="flex"><span class="w-36 font-bold text-slate-600">Tarif SPP / Bulan</span><span class="w-3">:</span><span class="font-bold text-emerald-700" id="printKartuNominal">Rp 0</span></div>
+                <div class="flex"><span class="w-36 font-bold text-slate-600">Tahun Ajaran</span><span class="w-3">:</span><span class="font-medium">2025/2026 (Juli - Juni)</span></div>
+            </div>
+        </div>
+        <table class="w-full text-left border-collapse border border-slate-800 text-xs mb-6">
+            <thead>
+                <tr class="bg-slate-100 border border-slate-800 font-bold text-slate-800">
+                    <th class="p-2 border border-slate-800 text-center w-10">No</th>
+                    <th class="p-2 border border-slate-800">Bulan</th>
+                    <th class="p-2 border border-slate-800 text-center">Semester</th>
+                    <th class="p-2 border border-slate-800 text-right">Nominal Tagihan</th>
+                    <th class="p-2 border border-slate-800 text-center">Tgl Bayar</th>
+                    <th class="p-2 border border-slate-800 text-center">Metode</th>
+                    <th class="p-2 border border-slate-800 text-center">Status</th>
+                    <th class="p-2 border border-slate-800 text-center w-28">Validasi</th>
+                </tr>
+            </thead>
+            <tbody id="printKartuTableBody" class="text-xs"></tbody>
+        </table>
+        <div class="flex justify-between items-end border-t-2 border-slate-800 pt-4">
+            <div class="bg-slate-50 border border-slate-300 p-3 rounded-lg text-xs space-y-1">
+                <p class="text-slate-600">Total Tagihan (12 Bulan): <b id="printKartuTotalTagihan" class="text-slate-900">Rp 0</b></p>
+                <p class="text-emerald-700">Total Sudah Dibayar: <b id="printKartuTotalBayar">Rp 0</b></p>
+                <p class="text-rose-700">Sisa Tagihan Belum Dibayar: <b id="printKartuSisaBayar">Rp 0</b></p>
+            </div>
+            <div class="text-center text-xs">
+                <p class="mb-14" id="printKartuTgl">Salatiga, -</p>
+                <p class="font-bold underline">Petugas / Bendahara PKBM</p>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= LOGIN SCREEN ================= -->
     <div id="loginScreen" class="hidden-el min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-slate-900 px-4">
         <div class="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8">
@@ -172,6 +228,9 @@
                 </button>
                 <button onclick="window.switchTab('spp')" id="nav-spp" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-800">
                     <i class="fa-solid fa-wallet w-5 text-center"></i> Pembayaran SPP
+                </button>
+                <button onclick="window.switchTab('kartu-spp')" id="nav-kartu-spp" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-800">
+                    <i class="fa-solid fa-address-card w-5 text-center"></i> Kartu SPP Digital
                 </button>
                 <button onclick="window.switchTab('kumulatif')" id="nav-kumulatif" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition text-slate-300 hover:bg-slate-800">
                     <i class="fa-solid fa-chart-column w-5 text-center"></i> Rekap Kumulatif
@@ -391,6 +450,138 @@
                                 <tbody id="sppTableBody" class="divide-y divide-slate-200 text-sm"></tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+
+                <!-- TAB: KARTU SPP DIGITAL -->
+                <div id="tab-kartu-spp" class="tab-content hidden-el space-y-6">
+                    <!-- Ringkasan Statistik Kartu SPP -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
+                            <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-address-card"></i></div>
+                            <div class="min-w-0">
+                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Total Siswa Terdaftar</p>
+                                <h3 id="ksTotalSiswa" class="text-2xl font-black text-slate-900">0</h3>
+                                <p class="text-[10px] text-slate-400">Dengan tarif SPP aktif</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
+                            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-circle-check"></i></div>
+                            <div class="min-w-0">
+                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Total Bulan Lunas</p>
+                                <h3 id="ksTotalBulanLunas" class="text-2xl font-black text-emerald-600">0</h3>
+                                <p class="text-[10px] text-emerald-700 font-semibold" id="ksTotalNominalLunas">Rp 0</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
+                            <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-xl flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-circle-exclamation"></i></div>
+                            <div class="min-w-0">
+                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Bulan Tertunggak</p>
+                                <h3 id="ksTotalBulanNunggak" class="text-2xl font-black text-rose-600">0</h3>
+                                <p class="text-[10px] text-rose-700 font-semibold" id="ksTotalNominalNunggak">Rp 0</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-4">
+                            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-xl shrink-0"><i class="fa-solid fa-chart-pie"></i></div>
+                            <div class="min-w-0">
+                                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Tingkat Kelunasan</p>
+                                <h3 id="ksPersenKelunasan" class="text-2xl font-black text-indigo-600">0%</h3>
+                                <div class="w-28 bg-slate-100 h-1.5 rounded-full overflow-hidden mt-1">
+                                    <div id="ksProgressBar" class="bg-indigo-600 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Toolbar & Filter -->
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
+                        <div class="flex flex-col xl:flex-row justify-between items-center gap-4">
+                            <div>
+                                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                                    <i class="fa-solid fa-address-card text-blue-600"></i> Kartu SPP Digital Siswa (T.A. 2025/2026)
+                                </h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Monitoring pembayaran SPP 12 bulan (Juli s/d Juni) lengkap dengan cetak kartu fisik dan export data.</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2 w-full xl:w-auto justify-end">
+                                <!-- Mode Tampilan -->
+                                <div class="inline-flex rounded-lg border border-slate-200 p-1 bg-slate-100 text-xs font-bold">
+                                    <button id="btnViewMatriks" onclick="window.setKartuViewMode('matriks')" class="px-3 py-1.5 rounded-md transition bg-white text-blue-700 shadow-sm flex items-center gap-1.5">
+                                        <i class="fa-solid fa-table-cells"></i> Matriks 12 Bulan
+                                    </button>
+                                    <button id="btnViewGrid" onclick="window.setKartuViewMode('grid')" class="px-3 py-1.5 rounded-md transition text-slate-600 hover:text-slate-900 flex items-center gap-1.5">
+                                        <i class="fa-solid fa-id-card"></i> Kartu Digital Siswa
+                                    </button>
+                                </div>
+                                <button onclick="window.exportMatriksKartuExcel()" class="bg-emerald-100 hover:bg-emerald-600 text-emerald-700 hover:text-white px-3.5 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 shadow-sm">
+                                    <i class="fa-solid fa-file-excel"></i> Export Rekap Excel
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Baris Filter -->
+                        <div class="flex flex-col lg:flex-row gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200 items-center justify-between">
+                            <div class="relative w-full lg:w-80">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fa-solid fa-magnifying-glass text-slate-400"></i></div>
+                                <input type="text" id="searchKartuSpp" placeholder="Cari nama atau NIS siswa..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                            
+                            <div class="flex flex-wrap gap-2 w-full lg:w-auto items-center">
+                                <span class="text-xs font-bold text-slate-500 uppercase hidden sm:block"><i class="fa-solid fa-filter mr-1"></i> Filter:</span>
+                                
+                                <select id="filterUnitKartuSpp" class="px-3 py-2 border border-slate-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Semua Kantong Belajar</option>
+                                </select>
+
+                                <select id="filterStatusSiswaKartu" class="px-3 py-2 border border-slate-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Semua Status Siswa</option>
+                                    <option value="Aktif">Aktif</option>
+                                    <option value="Baru">Baru</option>
+                                    <option value="Mutasi">Mutasi</option>
+                                    <option value="Lulus">Lulus</option>
+                                </select>
+
+                                <select id="filterKelunasanKartu" class="px-3 py-2 border border-slate-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-blue-500 font-bold text-slate-700">
+                                    <option value="">Semua Kelunasan</option>
+                                    <option value="nunggak">Ada Tunggakan</option>
+                                    <option value="lunas">Lunas 100% (12 Bulan)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAMPILAN 1: MODE MATRIKS 12 BULAN -->
+                    <div id="containerMatriksKartu" class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse min-w-[1150px]">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 text-[11px] uppercase border-b border-slate-200 font-bold">
+                                        <th class="p-3 text-center w-10">No</th>
+                                        <th class="p-3">Nama Siswa & Unit</th>
+                                        <th class="p-3 text-right">Tarif/Bln</th>
+                                        <th class="p-2 text-center text-blue-700 bg-blue-50/70 border-x border-blue-100">Jul</th>
+                                        <th class="p-2 text-center text-blue-700 bg-blue-50/70 border-r border-blue-100">Agu</th>
+                                        <th class="p-2 text-center text-blue-700 bg-blue-50/70 border-r border-blue-100">Sep</th>
+                                        <th class="p-2 text-center text-blue-700 bg-blue-50/70 border-r border-blue-100">Okt</th>
+                                        <th class="p-2 text-center text-blue-700 bg-blue-50/70 border-r border-blue-100">Nov</th>
+                                        <th class="p-2 text-center text-blue-700 bg-blue-50/70 border-r border-blue-200">Des</th>
+                                        <th class="p-2 text-center text-indigo-700 bg-indigo-50/70 border-r border-indigo-100">Jan</th>
+                                        <th class="p-2 text-center text-indigo-700 bg-indigo-50/70 border-r border-indigo-100">Feb</th>
+                                        <th class="p-2 text-center text-indigo-700 bg-indigo-50/70 border-r border-indigo-100">Mar</th>
+                                        <th class="p-2 text-center text-indigo-700 bg-indigo-50/70 border-r border-indigo-100">Apr</th>
+                                        <th class="p-2 text-center text-indigo-700 bg-indigo-50/70 border-r border-indigo-100">Mei</th>
+                                        <th class="p-2 text-center text-indigo-700 bg-indigo-50/70 border-r border-indigo-200">Jun</th>
+                                        <th class="p-3 text-center">Kelunasan</th>
+                                        <th class="p-3 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="matriksKartuTableBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAMPILAN 2: MODE GRID KARTU DIGITAL SISWA -->
+                    <div id="containerGridKartu" class="hidden-el grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <!-- Diisi via JS -->
                     </div>
                 </div>
 
@@ -760,6 +951,14 @@
                     <!-- Grid akan diisi via JS -->
                 </div>
             </div>
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-between items-center shrink-0">
+                <button type="button" onclick="window.tutupModal('historiSppModal')" class="px-4 py-2 bg-slate-200 text-slate-700 font-bold rounded-lg text-xs hover:bg-slate-300 transition">
+                    Tutup
+                </button>
+                <button type="button" id="btnCetakKartuModal" onclick="window.cetakKartuSppSiswa(document.getElementById('historiSppModal').dataset.siswaId)" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs flex items-center gap-2 shadow transition">
+                    <i class="fa-solid fa-print"></i> Cetak Kartu SPP Resmi
+                </button>
+            </div>
         </div>
     </div>
 
@@ -982,6 +1181,7 @@
                 window.siswaData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 window.renderTabelSiswa();
                 window.renderKumulatif();
+                if(typeof window.renderKartuSpp === 'function') window.renderKartuSpp();
                 clearTimeout(timeoutFetch); 
                 setLoading(false);
             }, (error) => {
@@ -996,6 +1196,7 @@
                 window.sppData = newData;
                 window.renderTabelSpp();
                 window.renderDashboard();
+                if(typeof window.renderKartuSpp === 'function') window.renderKartuSpp();
             }, (error) => { console.error(error); });
         }
 
@@ -1078,10 +1279,11 @@
                 activeNav.classList.remove('text-slate-300', 'hover:bg-slate-800'); 
                 activeNav.classList.add('bg-blue-600', 'text-white');
             }
-            const titles = { 'dashboard': 'Dashboard', 'unit':'Master Kantong Belajar', 'siswa': 'Data Induk Siswa', 'spp': 'Pembayaran SPP', 'kumulatif': 'Rekap Kumulatif', 'pengaturan': 'Pengaturan Sistem' };
-            document.getElementById('headerTitle').innerText = titles[tabId];
+            const titles = { 'dashboard': 'Dashboard', 'unit':'Master Kantong Belajar', 'siswa': 'Data Induk Siswa', 'spp': 'Pembayaran SPP', 'kartu-spp': 'Kartu SPP Digital', 'kumulatif': 'Rekap Kumulatif', 'pengaturan': 'Pengaturan Sistem' };
+            document.getElementById('headerTitle').innerText = titles[tabId] || 'Sistem Administrasi';
             if(window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
             if(tabId === 'dashboard') window.renderDashboard();
+            if(tabId === 'kartu-spp') window.renderKartuSpp();
             if(tabId === 'kumulatif') window.renderKumulatif();
         };
 
@@ -1127,6 +1329,7 @@
             if(document.getElementById('mUnit')) document.getElementById('mUnit').innerHTML = `<option value="SEMUA">-- SEMUA UNIT --</option>` + opts;
             if(document.getElementById('filterUnitTabel')) document.getElementById('filterUnitTabel').innerHTML = `<option value="">Semua Kantong Belajar</option>` + opts;
             if(document.getElementById('filterUnitSpp')) document.getElementById('filterUnitSpp').innerHTML = `<option value="">Semua Kantong Belajar</option>` + opts;
+            if(document.getElementById('filterUnitKartuSpp')) document.getElementById('filterUnitKartuSpp').innerHTML = `<option value="">Semua Kantong Belajar</option>` + opts;
         };
 
         window.openUnitModal = function() {
@@ -1596,6 +1799,8 @@
 
         window.bukaHistoriSpp = function(id) {
             const s = window.siswaData.find(x => x.id === id); if(!s) return;
+            const modalEl = document.getElementById('historiSppModal');
+            modalEl.dataset.siswaId = id;
             document.getElementById('hSiswaNama').innerText = s.nama;
             document.getElementById('hSiswaInfo').innerText = `${s.unit || '-'} | Tagihan: ${window.formatRp(s.spp_nominal)} / Bulan`;
 
@@ -1611,35 +1816,50 @@
                 const textColor = isLunas ? 'text-emerald-700' : 'text-slate-500';
                 const icon = isLunas ? '<i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i>' : '<i class="fa-solid fa-circle-xmark text-slate-300 text-xl"></i>';
                 const detail = isLunas ? `<p class="text-[10px] text-emerald-600 mt-1 font-medium">${dSpp[bln].tgl_bayar} • ${window.formatRp(dSpp[bln].nominal)}</p>` : `<p class="text-[10px] text-rose-500 font-bold mt-1">Belum Lunas</p>`;
-
                 const semesterInfo = index < 6 ? 'Semester Ganjil' : 'Semester Genap';
 
+                let actionBtn = isLunas 
+                    ? `<div class="mt-2 flex gap-1">
+                         <button onclick="window.bukaModalBayar('${id}', true, '${bln}')" class="px-2 py-0.5 bg-amber-100 hover:bg-amber-500 text-amber-800 hover:text-white text-[10px] font-bold rounded transition">Edit</button>
+                         <button onclick="window.tampilkanKonfirmasi('Batalkan status lunas bulan ${bln}?', () => window.batalBayar('${id}', '${bln}'))" class="px-2 py-0.5 bg-rose-100 hover:bg-rose-600 text-rose-700 hover:text-white text-[10px] font-bold rounded transition">Batal</button>
+                       </div>`
+                    : `<div class="mt-2">
+                         <button onclick="window.bukaModalBayar('${id}', false, '${bln}')" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold rounded transition flex items-center gap-1 shadow-xs"><i class="fa-solid fa-plus"></i> Catat Bayar</button>
+                       </div>`;
+
                 container.innerHTML += `
-                    <div class="border ${statusColor} rounded-xl p-4 flex items-center justify-between shadow-sm relative overflow-hidden">
+                    <div class="border ${statusColor} rounded-xl p-4 flex flex-col justify-between shadow-sm relative overflow-hidden">
                         ${isLunas ? '<div class="absolute -right-2 -bottom-2 opacity-10 text-4xl text-emerald-500"><i class="fa-solid fa-check"></i></div>' : ''}
-                        <div class="relative z-10">
-                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">${semesterInfo}</p>
-                            <h5 class="font-bold ${textColor} text-sm">${bln}</h5>
-                            ${detail}
+                        <div class="flex items-start justify-between relative z-10">
+                            <div>
+                                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">${semesterInfo}</p>
+                                <h5 class="font-bold ${textColor} text-sm">${bln}</h5>
+                                ${detail}
+                            </div>
+                            <div>${icon}</div>
                         </div>
-                        <div class="relative z-10">${icon}</div>
+                        <div class="relative z-10 pt-1">
+                            ${actionBtn}
+                        </div>
                     </div>
                 `;
             });
 
-            document.getElementById('historiSppModal').classList.remove('hidden-el');
+            modalEl.classList.remove('hidden-el');
         };
 
-        window.bukaModalBayar = function(id, isEdit = false) {
+        window.bukaModalBayar = function(id, isEdit = false, bulan = null) {
             const s = window.siswaData.find(x => x.id === id);
+            if (!s) return;
+            const targetBulan = bulan || window.currentBulanSpp;
             document.getElementById('modalBayarTitle').innerText = isEdit ? 'Edit Pembayaran' : 'Catat Pembayaran SPP';
             document.getElementById('bSiswaId').value = id;
-            document.getElementById('bBulan').value = window.currentBulanSpp;
+            document.getElementById('bBulan').value = targetBulan;
             document.getElementById('bSiswaNama').innerText = s.nama;
-            document.getElementById('bBulanLabel').innerText = window.currentBulanSpp;
+            document.getElementById('bBulanLabel').innerText = targetBulan;
             
-            if(isEdit && window.sppData[id] && window.sppData[id][window.currentBulanSpp]) {
-                const b = window.sppData[id][window.currentBulanSpp];
+            if(isEdit && window.sppData[id] && window.sppData[id][targetBulan]) {
+                const b = window.sppData[id][targetBulan];
                 document.getElementById('bTgl').value = b.tgl_bayar;
                 document.getElementById('bNominal').value = b.nominal;
                 document.getElementById('bMetode').value = b.metode;
@@ -1660,18 +1880,27 @@
             updateData[bln] = { lunas: true, tgl_bayar: document.getElementById('bTgl').value, nominal: Number(document.getElementById('bNominal').value), metode: document.getElementById('bMetode').value };
             try {
                 await setDoc(doc(db, "spp", id), updateData, { merge: true });
-                window.showToast('Tersimpan!'); window.tutupModal('bayarSppModal');
+                window.showToast('Tersimpan!'); 
+                window.tutupModal('bayarSppModal');
+                if(!document.getElementById('historiSppModal').classList.contains('hidden-el')) {
+                    window.bukaHistoriSpp(id);
+                }
+                if(typeof window.renderKartuSpp === 'function') window.renderKartuSpp();
             } catch(err) { window.showToast('Gagal!', 'error'); }
             finally { setLoading(false); }
         });
 
-        window.batalBayar = async function(id) {
+        window.batalBayar = async function(id, bulan = null) {
             setLoading(true);
-            const bln = window.currentBulanSpp;
+            const bln = bulan || window.currentBulanSpp;
             const updateData = {}; updateData[bln] = deleteField(); // Menggunakan deleteField untuk membuang bulan spesifik 
             try {
                 await setDoc(doc(db, "spp", id), updateData, { merge: true });
-                window.showToast('Dibatalkan', 'error');
+                window.showToast(`Status pembayaran ${bln} dibatalkan`, 'info');
+                if(!document.getElementById('historiSppModal').classList.contains('hidden-el')) {
+                    window.bukaHistoriSpp(id);
+                }
+                if(typeof window.renderKartuSpp === 'function') window.renderKartuSpp();
             } catch(err) { window.showToast('Gagal!', 'error'); }
             finally { setLoading(false); }
         };
@@ -1710,6 +1939,434 @@
             XLSX.writeFile(wb, `Rekap_SPP_Destiny_${bln}.xlsx`);
             window.showToast('Mendownload Excel...');
         };
+
+        // --- KARTU SPP DIGITAL LOGIC ---
+        window.currentKartuViewMode = 'matriks';
+
+        window.setKartuViewMode = function(mode) {
+            window.currentKartuViewMode = mode;
+            const btnMatriks = document.getElementById('btnViewMatriks');
+            const btnGrid = document.getElementById('btnViewGrid');
+            const cMatriks = document.getElementById('containerMatriksKartu');
+            const cGrid = document.getElementById('containerGridKartu');
+
+            if (mode === 'matriks') {
+                if(btnMatriks) btnMatriks.className = 'px-3 py-1.5 rounded-md transition bg-white text-blue-700 shadow-sm flex items-center gap-1.5';
+                if(btnGrid) btnGrid.className = 'px-3 py-1.5 rounded-md transition text-slate-600 hover:text-slate-900 flex items-center gap-1.5';
+                if(cMatriks) cMatriks.classList.remove('hidden-el');
+                if(cGrid) cGrid.classList.add('hidden-el');
+            } else {
+                if(btnGrid) btnGrid.className = 'px-3 py-1.5 rounded-md transition bg-white text-blue-700 shadow-sm flex items-center gap-1.5';
+                if(btnMatriks) btnMatriks.className = 'px-3 py-1.5 rounded-md transition text-slate-600 hover:text-slate-900 flex items-center gap-1.5';
+                if(cGrid) cGrid.classList.remove('hidden-el');
+                if(cMatriks) cMatriks.classList.add('hidden-el');
+            }
+            window.renderKartuSpp();
+        };
+
+        window.renderKartuSpp = function() {
+            if (!document.getElementById('tab-kartu-spp')) return;
+            const urutanBulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+            const bulanSingkat = ['Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des', 'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'];
+
+            const searchQuery = (document.getElementById('searchKartuSpp')?.value || '').toLowerCase().trim();
+            const filterUnit = document.getElementById('filterUnitKartuSpp')?.value || '';
+            const filterStatusSiswa = document.getElementById('filterStatusSiswaKartu')?.value || '';
+            const filterKelunasan = document.getElementById('filterKelunasanKartu')?.value || '';
+
+            // Global Statistics (All registered students)
+            let totalSiswa = 0;
+            let totalBulanLunasSemua = 0;
+            let totalBulanNunggakSemua = 0;
+            let totalNominalLunasSemua = 0;
+            let totalNominalNunggakSemua = 0;
+
+            const siswaList = window.siswaData || [];
+            siswaList.forEach(s => {
+                const tarif = Number(s.spp_nominal) || 0;
+                const dSpp = window.sppData[s.id] || {};
+                let lunasCount = 0;
+                urutanBulan.forEach(bln => {
+                    if (dSpp[bln] && dSpp[bln].lunas) {
+                        lunasCount++;
+                        totalNominalLunasSemua += (Number(dSpp[bln].nominal) || tarif);
+                    } else if (s.status === 'Aktif') {
+                        totalNominalNunggakSemua += tarif;
+                    }
+                });
+                totalSiswa++;
+                totalBulanLunasSemua += lunasCount;
+                if (s.status === 'Aktif') {
+                    totalBulanNunggakSemua += (12 - lunasCount);
+                }
+            });
+
+            // Update Metric Cards
+            const maxBulanTotal = (totalSiswa * 12) || 1;
+            const persenGlobal = Math.round((totalBulanLunasSemua / maxBulanTotal) * 100);
+
+            if (document.getElementById('ksTotalSiswa')) document.getElementById('ksTotalSiswa').innerText = totalSiswa;
+            if (document.getElementById('ksTotalBulanLunas')) document.getElementById('ksTotalBulanLunas').innerText = `${totalBulanLunasSemua} Bln`;
+            if (document.getElementById('ksTotalNominalLunas')) document.getElementById('ksTotalNominalLunas').innerText = window.formatRp(totalNominalLunasSemua);
+            if (document.getElementById('ksTotalBulanNunggak')) document.getElementById('ksTotalBulanNunggak').innerText = `${totalBulanNunggakSemua} Bln`;
+            if (document.getElementById('ksTotalNominalNunggak')) document.getElementById('ksTotalNominalNunggak').innerText = window.formatRp(totalNominalNunggakSemua);
+            if (document.getElementById('ksPersenKelunasan')) document.getElementById('ksPersenKelunasan').innerText = `${persenGlobal}%`;
+            if (document.getElementById('ksProgressBar')) document.getElementById('ksProgressBar').style.width = `${persenGlobal}%`;
+
+            // Filter Students
+            const filteredSiswa = siswaList.filter(s => {
+                const matchSearch = !searchQuery || 
+                    (s.nama && s.nama.toLowerCase().includes(searchQuery)) || 
+                    (s.nis && s.nis.toLowerCase().includes(searchQuery));
+                const matchUnit = !filterUnit || s.unit === filterUnit;
+                const matchStatus = !filterStatusSiswa || s.status === filterStatusSiswa;
+
+                const dSpp = window.sppData[s.id] || {};
+                let lunasCount = 0;
+                urutanBulan.forEach(bln => {
+                    if (dSpp[bln] && dSpp[bln].lunas) lunasCount++;
+                });
+
+                let matchKelunasan = true;
+                if (filterKelunasan === 'lunas') matchKelunasan = (lunasCount === 12);
+                if (filterKelunasan === 'nunggak') matchKelunasan = (lunasCount < 12);
+
+                return matchSearch && matchUnit && matchStatus && matchKelunasan;
+            });
+
+            // 1. RENDER MODE MATRIKS
+            const matriksTbody = document.getElementById('matriksKartuTableBody');
+            if (matriksTbody) {
+                matriksTbody.innerHTML = '';
+                if (filteredSiswa.length === 0) {
+                    matriksTbody.innerHTML = `<tr><td colspan="17" class="p-8 text-center text-slate-400 font-medium"><i class="fa-solid fa-inbox text-3xl mb-2 block text-slate-300"></i>Tidak ada data siswa yang cocok dengan filter pencarian.</td></tr>`;
+                } else {
+                    filteredSiswa.forEach((s, idx) => {
+                        const dSpp = window.sppData[s.id] || {};
+                        let lunasCount = 0;
+                        let bulansHtml = '';
+
+                        urutanBulan.forEach((bln, bIdx) => {
+                            const isLunas = dSpp[bln] && dSpp[bln].lunas;
+                            const isGenap = bIdx >= 6;
+                            const bgCol = isGenap ? 'bg-indigo-50/20' : 'bg-blue-50/20';
+
+                            if (isLunas) {
+                                lunasCount++;
+                                const bInfo = dSpp[bln];
+                                bulansHtml += `
+                                    <td class="p-1.5 text-center border-r border-slate-100 ${bgCol}">
+                                        <button type="button" onclick="window.bukaModalBayar('${s.id}', true, '${bln}')" title="${bln}: Lunas (${bInfo.tgl_bayar} via ${bInfo.metode}) - Klik untuk edit" class="w-7 h-7 rounded-md bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-black text-xs inline-flex items-center justify-center transition shadow-xs">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </td>
+                                `;
+                            } else {
+                                bulansHtml += `
+                                    <td class="p-1.5 text-center border-r border-slate-100 ${bgCol}">
+                                        <button type="button" onclick="window.bukaModalBayar('${s.id}', false, '${bln}')" title="${bln}: Belum Bayar - Klik untuk catat bayar" class="w-7 h-7 rounded-md bg-slate-100 hover:bg-blue-100 hover:text-blue-700 text-slate-300 font-bold text-xs inline-flex items-center justify-center transition">
+                                            <i class="fa-solid fa-minus text-[10px]"></i>
+                                        </button>
+                                    </td>
+                                `;
+                            }
+                        });
+
+                        const persenSiswa = Math.round((lunasCount / 12) * 100);
+                        const kelunasanBadgeColor = lunasCount === 12 
+                            ? 'text-emerald-700 bg-emerald-50 border-emerald-200' 
+                            : (lunasCount >= 6 ? 'text-blue-700 bg-blue-50 border-blue-200' : 'text-rose-700 bg-rose-50 border-rose-200');
+
+                        matriksTbody.innerHTML += `
+                            <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+                                <td class="p-3 text-center font-bold text-slate-400">${idx + 1}</td>
+                                <td class="p-3">
+                                    <div class="font-bold text-slate-900">${s.nama}</div>
+                                    <div class="text-[11px] text-slate-500 flex items-center gap-1.5 mt-0.5">
+                                        <span class="font-semibold text-blue-600">${s.unit || '-'}</span>
+                                        <span>•</span>
+                                        <span>NIS: ${s.nis || '-'}</span>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right font-bold text-slate-700 whitespace-nowrap">
+                                    ${window.formatRp(s.spp_nominal)}
+                                </td>
+                                ${bulansHtml}
+                                <td class="p-3 text-center whitespace-nowrap">
+                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold border ${kelunasanBadgeColor}">
+                                        ${lunasCount}/12 Bln (${persenSiswa}%)
+                                    </span>
+                                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden mt-1 max-w-[80px] mx-auto">
+                                        <div class="h-full ${lunasCount === 12 ? 'bg-emerald-500' : 'bg-blue-500'} rounded-full" style="width: ${persenSiswa}%"></div>
+                                    </div>
+                                </td>
+                                <td class="p-3 text-right whitespace-nowrap">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <button type="button" onclick="window.bukaHistoriSpp('${s.id}')" title="Buka Detail Kartu SPP" class="px-2.5 py-1.5 bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white rounded-lg text-xs font-bold transition flex items-center gap-1">
+                                            <i class="fa-solid fa-eye"></i> Detail
+                                        </button>
+                                        <button type="button" onclick="window.cetakKartuSppSiswa('${s.id}')" title="Cetak Kartu SPP Resmi" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-800 text-slate-700 hover:text-white rounded-lg text-xs font-bold transition flex items-center gap-1">
+                                            <i class="fa-solid fa-print"></i> Cetak
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+
+            // 2. RENDER MODE GRID KARTU DIGITAL SISWA
+            const gridContainer = document.getElementById('containerGridKartu');
+            if (gridContainer) {
+                gridContainer.innerHTML = '';
+                if (filteredSiswa.length === 0) {
+                    gridContainer.innerHTML = `<div class="col-span-full p-8 text-center text-slate-400 font-medium bg-white rounded-xl border border-slate-200"><i class="fa-solid fa-inbox text-3xl mb-2 block text-slate-300"></i>Tidak ada data siswa yang cocok dengan filter pencarian.</div>`;
+                } else {
+                    filteredSiswa.forEach(s => {
+                        const dSpp = window.sppData[s.id] || {};
+                        const tarif = Number(s.spp_nominal) || 0;
+                        let lunasCount = 0;
+                        let totalBayar = 0;
+
+                        urutanBulan.forEach(bln => {
+                            if (dSpp[bln] && dSpp[bln].lunas) {
+                                lunasCount++;
+                                totalBayar += (Number(dSpp[bln].nominal) || tarif);
+                            }
+                        });
+
+                        const persen = Math.round((lunasCount / 12) * 100);
+                        const sisaTagihan = Math.max(0, (tarif * 12) - totalBayar);
+
+                        // Chips 12 bulan
+                        let chipsHtml = '';
+                        urutanBulan.forEach((bln, bIdx) => {
+                            const isLunas = dSpp[bln] && dSpp[bln].lunas;
+                            const bShort = bulanSingkat[bIdx];
+                            if (isLunas) {
+                                chipsHtml += `
+                                    <button type="button" onclick="window.bukaModalBayar('${s.id}', true, '${bln}')" title="${bln}: Lunas (${dSpp[bln].tgl_bayar})" class="px-2 py-1 bg-emerald-100 text-emerald-800 font-bold rounded text-[10px] flex items-center justify-center gap-1 hover:bg-emerald-200 transition">
+                                        <i class="fa-solid fa-check text-[9px]"></i> ${bShort}
+                                    </button>
+                                `;
+                            } else {
+                                chipsHtml += `
+                                    <button type="button" onclick="window.bukaModalBayar('${s.id}', false, '${bln}')" title="${bln}: Belum Lunas (Klik untuk catat bayar)" class="px-2 py-1 bg-slate-100 text-slate-400 hover:bg-blue-100 hover:text-blue-700 font-medium rounded text-[10px] flex items-center justify-center transition">
+                                        ${bShort}
+                                    </button>
+                                `;
+                            }
+                        });
+
+                        // WA Notification link if overdue
+                        let waButton = '';
+                        const hpOrtu = s.ayahhp || s.ibuhp || s.walihp;
+                        if (lunasCount < 12 && hpOrtu) {
+                            let cleanPhone = hpOrtu.replace(/[^0-9]/g, '');
+                            if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.slice(1);
+                            const pesanWa = encodeURIComponent(`Halo Bpk/Ibu wali dari ${s.nama} (${s.unit}), kami menginformasikan mengenai Kartu SPP Digital PKBM Destiny Institute Tahun Ajaran 2025/2026 saat ini tercatat sudah terbayar ${lunasCount} dari 12 bulan (Tunggakan: ${12 - lunasCount} bulan). Terima kasih.`);
+                            waButton = `
+                                <a href="https://wa.me/${cleanPhone}?text=${pesanWa}" target="_blank" class="p-2 bg-emerald-50 hover:bg-emerald-500 text-emerald-600 hover:text-white rounded-lg text-xs font-bold transition flex items-center justify-center" title="Kirim Pengingat SPP via WhatsApp">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                                </a>
+                            `;
+                        }
+
+                        gridContainer.innerHTML += `
+                            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col justify-between hover:shadow-md transition">
+                                <!-- Card Header -->
+                                <div class="p-5 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-blue-50/30">
+                                    <div class="flex justify-between items-start gap-2">
+                                        <div>
+                                            <span class="text-[10px] font-bold text-blue-700 bg-blue-100/80 px-2 py-0.5 rounded-full uppercase tracking-wider">${s.unit || 'Umum'}</span>
+                                            <h4 class="font-black text-slate-900 text-base mt-1 line-clamp-1">${s.nama}</h4>
+                                            <p class="text-xs text-slate-500 font-medium">NIS: ${s.nis || '-'} • ${s.status || 'Aktif'}</p>
+                                        </div>
+                                        <div class="text-right shrink-0">
+                                            <span class="text-[10px] uppercase font-bold text-slate-400 block">SPP / Bulan</span>
+                                            <span class="text-sm font-black text-emerald-700">${window.formatRp(tarif)}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Progress Bar -->
+                                    <div class="mt-4 pt-3 border-t border-slate-200/60">
+                                        <div class="flex justify-between text-xs font-bold mb-1.5">
+                                            <span class="text-slate-600">Progres 12 Bulan</span>
+                                            <span class="${lunasCount === 12 ? 'text-emerald-600' : 'text-blue-600'}">${lunasCount}/12 Bulan (${persen}%)</span>
+                                        </div>
+                                        <div class="w-full bg-slate-200/80 h-2 rounded-full overflow-hidden">
+                                            <div class="h-full ${lunasCount === 12 ? 'bg-emerald-500' : 'bg-blue-600'} rounded-full transition-all duration-300" style="width: ${persen}%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card Body: 12 Month Grid -->
+                                <div class="p-5 flex-1 flex flex-col justify-between space-y-4">
+                                    <div>
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Matriks Kelunasan Bulanan</p>
+                                        <div class="grid grid-cols-6 gap-1.5">
+                                            ${chipsHtml}
+                                        </div>
+                                    </div>
+
+                                    <div class="flex justify-between items-center text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                        <div>
+                                            <p class="text-[10px] text-slate-400 font-bold uppercase">Terbayar</p>
+                                            <p class="font-bold text-emerald-700">${window.formatRp(totalBayar)}</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-[10px] text-slate-400 font-bold uppercase">Sisa Tunggakan</p>
+                                            <p class="font-bold ${sisaTagihan > 0 ? 'text-rose-600' : 'text-slate-400'}">${window.formatRp(sisaTagihan)}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Card Footer: Actions -->
+                                <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
+                                    <button type="button" onclick="window.bukaHistoriSpp('${s.id}')" class="flex-1 py-2 px-3 bg-white hover:bg-blue-600 hover:text-white border border-slate-200 text-slate-700 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs">
+                                        <i class="fa-solid fa-calendar-days text-blue-500"></i> Kartu Lengkap
+                                    </button>
+                                    <button type="button" onclick="window.cetakKartuSppSiswa('${s.id}')" class="py-2 px-3 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs" title="Cetak Kartu SPP Resmi">
+                                        <i class="fa-solid fa-print"></i> Cetak
+                                    </button>
+                                    ${waButton}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            }
+        };
+
+        window.cetakKartuSppSiswa = function(id) {
+            const s = window.siswaData.find(x => x.id === id);
+            if(!s) { window.showToast('Data siswa tidak ditemukan', 'error'); return; }
+            
+            const urutanBulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+            const dSpp = window.sppData[id] || {};
+            const tarifBln = Number(s.spp_nominal) || 0;
+            const totalTagihanTahun = tarifBln * 12;
+
+            let bulanLunas = 0;
+            let totalTerbayar = 0;
+            let tableHtml = '';
+
+            urutanBulan.forEach((bln, idx) => {
+                const isLunas = dSpp[bln] && dSpp[bln].lunas;
+                const semester = idx < 6 ? 'Semester Ganjil' : 'Semester Genap';
+                let nominalBln = tarifBln;
+                let tglBayar = '-';
+                let metode = '-';
+                let statusText = '<span class="text-rose-600 font-bold">BELUM LUNAS</span>';
+                let validasi = '<span class="text-slate-300">-</span>';
+
+                if(isLunas) {
+                    bulanLunas++;
+                    const b = dSpp[bln];
+                    nominalBln = Number(b.nominal) || tarifBln;
+                    totalTerbayar += nominalBln;
+                    tglBayar = b.tgl_bayar || '-';
+                    metode = b.metode || '-';
+                    statusText = '<span class="text-emerald-700 font-bold">✓ LUNAS</span>';
+                    validasi = '<span class="text-[10px] font-mono text-emerald-800 border border-emerald-300 bg-emerald-50 px-1 py-0.5 rounded">TERVERIFIKASI</span>';
+                }
+
+                tableHtml += `
+                    <tr class="border-b border-slate-300 ${isLunas ? 'bg-emerald-50/20' : ''}">
+                        <td class="p-2 border border-slate-800 text-center font-bold">${idx + 1}</td>
+                        <td class="p-2 border border-slate-800 font-semibold">${bln}</td>
+                        <td class="p-2 border border-slate-800 text-center text-slate-500">${semester}</td>
+                        <td class="p-2 border border-slate-800 text-right font-medium">${window.formatRp(tarifBln)}</td>
+                        <td class="p-2 border border-slate-800 text-center">${tglBayar}</td>
+                        <td class="p-2 border border-slate-800 text-center">${metode}</td>
+                        <td class="p-2 border border-slate-800 text-center">${statusText}</td>
+                        <td class="p-2 border border-slate-800 text-center">${validasi}</td>
+                    </tr>
+                `;
+            });
+
+            const sisaTunggakan = Math.max(0, totalTagihanTahun - totalTerbayar);
+            const statusLunasBadge = bulanLunas === 12 
+                ? '<span class="text-emerald-700">LUNAS PENUH (12/12)</span>' 
+                : `<span class="text-amber-600">${bulanLunas}/12 Lunas</span>`;
+
+            document.getElementById('printKartuSppStatusBadge').innerHTML = statusLunasBadge;
+            document.getElementById('printKartuLunasRatio').innerText = `${bulanLunas} dari 12 Bulan Terbayar`;
+            document.getElementById('printKartuNama').innerText = s.nama || '-';
+            document.getElementById('printKartuNis').innerText = `${s.nis || '-'} / ${s.nisn || '-'}`;
+            document.getElementById('printKartuUnit').innerText = s.unit || '-';
+            document.getElementById('printKartuStatusSiswa').innerText = s.status || 'Aktif';
+            document.getElementById('printKartuOrtu').innerText = s.ayahnama || s.ibunama || s.walinama || '-';
+            document.getElementById('printKartuHp').innerText = s.ayahhp || s.ibuhp || s.walihp || '-';
+            document.getElementById('printKartuNominal').innerText = `${window.formatRp(tarifBln)} / Bulan`;
+
+            document.getElementById('printKartuTableBody').innerHTML = tableHtml;
+            document.getElementById('printKartuTotalTagihan').innerText = window.formatRp(totalTagihanTahun);
+            document.getElementById('printKartuTotalBayar').innerText = window.formatRp(totalTerbayar);
+            document.getElementById('printKartuSisaBayar').innerText = window.formatRp(sisaTunggakan);
+
+            const now = new Date();
+            const namaBulanIndo = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+            document.getElementById('printKartuTgl').innerText = `Salatiga, ${now.getDate()} ${namaBulanIndo[now.getMonth()]} ${now.getFullYear()}`;
+
+            window.print();
+        };
+
+        window.exportMatriksKartuExcel = function() {
+            if (!window.siswaData || window.siswaData.length === 0) {
+                window.showToast('Data Siswa Kosong', 'error');
+                return;
+            }
+            const urutanBulan = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
+            
+            const excelRows = window.siswaData.map((s, index) => {
+                const tarif = Number(s.spp_nominal) || 0;
+                const dSpp = window.sppData[s.id] || {};
+                let bulanLunas = 0;
+                let totalBayar = 0;
+
+                const row = {
+                    "No": index + 1,
+                    "Nama Siswa": s.nama || '-',
+                    "NIS": s.nis || '-',
+                    "NISN": s.nisn || '-',
+                    "Kantong Belajar": s.unit || '-',
+                    "Status Siswa": s.status || 'Aktif',
+                    "Tarif SPP/Bulan": tarif,
+                };
+
+                urutanBulan.forEach(bln => {
+                    const isLunas = dSpp[bln] && dSpp[bln].lunas;
+                    if (isLunas) {
+                        bulanLunas++;
+                        totalBayar += (Number(dSpp[bln].nominal) || tarif);
+                        row[bln] = `LUNAS (${dSpp[bln].tgl_bayar || '-'})`;
+                    } else {
+                        row[bln] = 'BELUM BAYAR';
+                    }
+                });
+
+                row["Total Bulan Lunas"] = bulanLunas;
+                row["Total Terbayar (Rp)"] = totalBayar;
+                row["Sisa Tunggakan (Rp)"] = Math.max(0, (tarif * 12) - totalBayar);
+                row["No. WA Ortu"] = s.ayahhp || s.ibuhp || s.walihp || '-';
+
+                return row;
+            });
+
+            const ws = XLSX.utils.json_to_sheet(excelRows);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Kartu SPP 2025-2026");
+            XLSX.writeFile(wb, "Rekap_Matriks_Kartu_SPP_Destiny_2025_2026.xlsx");
+            window.showToast('Mendownload Rekap Matriks Kartu SPP...');
+        };
+
+        // Filter event listeners for Kartu SPP Digital
+        document.getElementById('searchKartuSpp')?.addEventListener('input', () => window.renderKartuSpp());
+        document.getElementById('filterUnitKartuSpp')?.addEventListener('change', () => window.renderKartuSpp());
+        document.getElementById('filterStatusSiswaKartu')?.addEventListener('change', () => window.renderKartuSpp());
+        document.getElementById('filterKelunasanKartu')?.addEventListener('change', () => window.renderKartuSpp());
     </script>
 </body>
 </html>
