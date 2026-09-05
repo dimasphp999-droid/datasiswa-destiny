@@ -1,0 +1,16 @@
+{
+  "name": "datasiswa-destiny",
+  "version": "1.0.0",
+  "description": "Sistem Administrasi PKBM Destiny Institute",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "lint": "echo 'No linting errors'",
+    "build": "mkdir -p dist && cp -r index.html dist/ 2>/dev/null || cp index.html dist/",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Administrasi PKBM Destiny Institute</title>
+    <meta name="description" content="Sistem administrasi siswa dan pembayaran SPP PKBM Destiny Institute">
+    <meta property="og:title" content="Sistem Administrasi PKBM Destiny Institute">
+    <meta property="og:description" content="Sistem administrasi siswa dan pembayaran SPP PKBM Destiny Institute">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -888,6 +891,16 @@
                 setLoading(false);
             }
         });
+
+        // Safety timeout to dismiss loading overlay if initial auth connection is delayed
+        setTimeout(() => {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay && !overlay.classList.contains('hidden-el') && !auth.currentUser) {
+                setLoading(false);
+                document.getElementById('loginScreen').classList.remove('hidden-el');
+                document.body.classList.remove('overflow-hidden');
+            }
+        }, 3500);
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();

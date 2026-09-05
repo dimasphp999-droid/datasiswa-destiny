@@ -1,0 +1,6 @@
+{
+  "name": "Sistem Administrasi PKBM Destiny Institute",
+  "description": "Sistem administrasi siswa dan pembayaran SPP PKBM Destiny Institute",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
