@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Administrasi PKBM Destiny Institute</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -43,7 +42,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-hidden">
 
-    <!-- OVERLAYS & TOAST -->
     <div id="loadingOverlay" class="fixed inset-0 z-[200] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center">
         <div class="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center">
             <div class="loader mb-4"></div>
@@ -56,7 +54,6 @@
         <span id="toastMsg" class="text-sm font-medium">Notifikasi</span>
     </div>
 
-    <!-- AREA CETAK KWITANSI -->
     <div id="kwitansiPrintArea" class="hidden-el bg-white border-2 border-slate-800 p-8 rounded-xl max-w-3xl mx-auto mt-10">
         <div class="flex justify-between items-center border-b-2 border-slate-800 pb-4 mb-6">
             <div>
@@ -87,7 +84,6 @@
         </div>
     </div>
 
-    <!-- AREA CETAK KUMULATIF -->
     <div id="kumulatifPrintArea" class="hidden-el bg-white p-6">
         <h2 class="text-2xl font-black text-center mb-2">REKAPITULASI KUMULATIF SISWA</h2>
         <h3 class="text-lg font-bold text-center mb-6 text-slate-600">PKBM DESTINY INSTITUTE SALATIGA</h3>
@@ -805,11 +801,12 @@
 
     <!-- ================= FIREBASE & LOGIC SCRIPT ================= -->
     <script type="module">
+        // Menggunakan Firebase SDK secara native
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, EmailAuthProvider, reauthenticateWithCredential, updateEmail, updatePassword } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc, writeBatch, deleteField } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-        // Konfigurasi Database Asli Anda
+        // Konfigurasi Database Firebase (Sesuai dengan lampiran checkpoint pengguna)
         const firebaseConfig = {
             apiKey: "AIzaSyCDTgLuGJc0vILZuX-BN0T9txK_F1XRTRE",
             authDomain: "datasiswa-destiny.firebaseapp.com",
@@ -823,7 +820,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // State Global
+        // State Global Data Realtime
         window.siswaData = [];
         window.unitData = [];
         window.sppData = {}; 
@@ -953,32 +950,26 @@
         function startRealtimeListeners() {
             setLoading(true, "Menarik Data dari Server...");
             
-            // Timeout Safeguard (15 Detik)
             timeoutFetch = setTimeout(() => {
                 setLoading(false);
                 window.showToast('Koneksi lambat! Periksa internet Anda.', 'error');
             }, 15000);
 
-            // 1. Data Unit (Kantong Belajar)
             unsubscribeUnits = onSnapshot(collection(db, "units"), (snapshot) => {
                 window.unitData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                
                 if(window.unitData.length === 0 && auth.currentUser) {
                     seedDefaultUnits();
                 } else {
                     window.renderTabelUnit();
                     window.updateUnitDropdowns();
                 }
-            }, (error) => {
-                console.error(error); setLoading(false);
-            });
+            }, (error) => { console.error(error); setLoading(false); });
 
-            // 2. Data Siswa
             unsubscribeSiswa = onSnapshot(collection(db, "siswa"), (snapshot) => {
                 window.siswaData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 window.renderTabelSiswa();
                 window.renderKumulatif();
-                clearTimeout(timeoutFetch); // Matikan loading jika sukses
+                clearTimeout(timeoutFetch); 
                 setLoading(false);
             }, (error) => {
                 console.error("Error load siswa", error); 
@@ -986,7 +977,6 @@
                 setLoading(false);
             });
 
-            // 3. Data SPP
             unsubscribeSpp = onSnapshot(collection(db, "spp"), (snapshot) => {
                 const newData = {};
                 snapshot.docs.forEach(doc => { newData[doc.id] = doc.data(); });
@@ -1016,22 +1006,16 @@
                     siswa: window.siswaData,
                     spp: window.sppData
                 };
-
                 const jsonStr = JSON.stringify(dataBackup, null, 2);
                 const blob = new Blob([jsonStr], { type: "application/json" });
                 const url = URL.createObjectURL(blob);
-                
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = `Backup_DB_PKBM_Destiny_${new Date().toISOString().slice(0,10)}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
                 window.showToast('File backup .json berhasil diunduh!');
-            } catch(e) {
-                console.error(e); window.showToast('Gagal membuat backup', 'error');
-            } finally { setLoading(false); }
+            } catch(e) { console.error(e); window.showToast('Gagal membuat backup', 'error'); } 
+            finally { setLoading(false); }
         };
 
         window.restoreDatabase = function() {
@@ -1044,7 +1028,6 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     if(!data.siswa || !data.spp) { window.showToast('Format file backup tidak valid!', 'error'); return; }
-
                     window.tampilkanKonfirmasi('Yakin ingin merestore database? Proses ini akan MENIMPA/MENGUBAH data yang ada.', async () => {
                         setLoading(true, "Merestore Database... Jangan tutup halaman ini.");
                         try {
@@ -1056,15 +1039,12 @@
                                     await batch.commit();
                                 }
                             };
-                            
                             if(data.units?.length) await restoreChunk("units", data.units);
                             if(data.siswa?.length) await restoreChunk("siswa", data.siswa);
-                            
                             if(data.spp) {
                                 const sppArr = Object.entries(data.spp).map(([id, sppData]) => ({ id, ...sppData }));
                                 if(sppArr.length) await restoreChunk("spp", sppArr);
                             }
-                            
                             window.showToast('Database berhasil dipulihkan!');
                             fileInput.value = ''; 
                         } catch(err) { console.error(err); window.showToast('Gagal merestore database', 'error'); } 
@@ -1074,7 +1054,6 @@
             };
             reader.readAsText(file);
         };
-
 
         // --- NAVIGATION ---
         window.switchTab = function(tabId) {
@@ -1089,7 +1068,6 @@
             const titles = { 'dashboard': 'Dashboard', 'unit':'Master Kantong Belajar', 'siswa': 'Data Induk Siswa', 'spp': 'Pembayaran SPP', 'kumulatif': 'Rekap Kumulatif', 'pengaturan': 'Pengaturan Sistem' };
             document.getElementById('headerTitle').innerText = titles[tabId];
             if(window.innerWidth < 768) document.getElementById('sidebar').classList.add('-translate-x-full');
-            
             if(tabId === 'dashboard') window.renderDashboard();
             if(tabId === 'kumulatif') window.renderKumulatif();
         };
@@ -1155,13 +1133,11 @@
             e.preventDefault();
             const id = document.getElementById('formUnitId').value;
             const nama = document.getElementById('uNama').value;
-            
             try {
                 setLoading(true, "Menyimpan Unit...");
                 const unitRef = id ? doc(db, "units", id) : doc(collection(db, "units"));
                 await setDoc(unitRef, { nama: nama }, { merge: true });
-                window.tutupModal('unitModal');
-                window.showToast('Unit Disimpan!');
+                window.tutupModal('unitModal'); window.showToast('Unit Disimpan!');
             } catch(e) { window.showToast('Gagal Menyimpan', 'error'); }
             finally { setLoading(false); }
         });
@@ -1175,7 +1151,6 @@
             finally { setLoading(false); }
         };
 
-
         // --- DATA SISWA CRUD & FILTER ---
         window.renderTabelSiswa = function() {
             const tbody = document.getElementById('siswaTableBody'); if(!tbody) return;
@@ -1187,16 +1162,10 @@
             const filterStatus = document.getElementById('filterStatusTabel') ? document.getElementById('filterStatusTabel').value : '';
 
             const filtered = window.siswaData.filter(s => {
-                // 1. Omni-Search 
                 const matchSearch = valFilter === '' || Object.values(s).some(val => String(val).toLowerCase().includes(valFilter));
-                
-                // 2. Filter Bulan Lahir (Cari format -MM- dari YYYY-MM-DD)
                 const matchBulan = filterBulan === '' || (s.tgllahir && s.tgllahir.includes(`-${filterBulan}-`));
-                
-                // 3. Filter Unit & Status
                 const matchUnit = filterUnit === '' || s.unit === filterUnit;
                 const matchStatus = filterStatus === '' || s.status === filterStatus;
-
                 return matchSearch && matchBulan && matchUnit && matchStatus;
             });
 
@@ -1215,7 +1184,6 @@
             });
         };
         
-        // Sensor Event Listeners
         if(document.getElementById('searchInput')) {
             document.getElementById('searchInput').addEventListener('input', window.renderTabelSiswa);
             document.getElementById('filterBulanLahir').addEventListener('change', window.renderTabelSiswa);
@@ -1246,20 +1214,11 @@
             ['fNama','fNis','fNisn','fNik','fJk','fTmpLahir','fTglLahir','fAgama','fEmailSiswa','fHpSiswa','fSekolahAsal','fKlsTinggal','fTglTerima','fKlsTerima','fUnit','fStatus','fSppNominal']
                 .forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k.replace('f','').toLowerCase()] || (k==='fSppNominal'?0:''); });
             
-            ['fNoKk','fKkAlamat','fKkRt','fKkRw','fKkKel','fKkKec','fKkKota']
-                .forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k.replace('f','').toLowerCase()] || ''; });
-            
-            ['fDomAlamat','fDomRt','fDomRw','fDomKel','fDomKec','fDomKota']
-                .forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k.replace('f','').toLowerCase()] || ''; });
-            
-            ['fAyahNama','fAyahNik','fAyahTmpLahir','fAyahTglLahir','fAyahAgama','fAyahKerja','fAyahEmail','fAyahHp']
-                .forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k.replace('f','').toLowerCase()] || ''; });
-            
-            ['fIbuNama','fIbuNik','fIbuTmpLahir','fIbuTglLahir','fIbuAgama','fIbuKerja','fIbuEmail','fIbuHp']
-                .forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k.replace('f','').toLowerCase()] || ''; });
-            
-            ['fWaliNama','fWaliNik','fWaliTmpLahir','fWaliTglLahir','fWaliAgama','fWaliKerja','fWaliAlamat','fWaliEmail','fWaliHp']
-                .forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k.replace('f','').toLowerCase()] || ''; });
+            ['fNoKk','fKkAlamat','fKkRt','fKkRw','fKkKel','fKkKec','fKkKota'].forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k.replace('f','').toLowerCase()] || ''; });
+            ['fDomAlamat','fDomRt','fDomRw','fDomKel','fDomKec','fDomKota'].forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k.replace('f','').toLowerCase()] || ''; });
+            ['fAyahNama','fAyahNik','fAyahTmpLahir','fAyahTglLahir','fAyahAgama','fAyahKerja','fAyahEmail','fAyahHp'].forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k.replace('f','').toLowerCase()] || ''; });
+            ['fIbuNama','fIbuNik','fIbuTmpLahir','fIbuTglLahir','fIbuAgama','fIbuKerja','fIbuEmail','fIbuHp'].forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k.replace('f','').toLowerCase()] || ''; });
+            ['fWaliNama','fWaliNik','fWaliTmpLahir','fWaliTglLahir','fWaliAgama','fWaliKerja','fWaliAlamat','fWaliEmail','fWaliHp'].forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k.replace('f','').toLowerCase()] || ''; });
 
             document.getElementById('siswaModalTitle').innerText = 'Edit Data Siswa';
             document.getElementById('siswaModal').classList.remove('hidden-el');
@@ -1270,9 +1229,9 @@
             let html = `
                 <div class="space-y-6 text-sm">
                     <div>
-                        <h4 class="font-bold text-blue-800 border-b pb-1 mb-2 uppercase">Data Pribadi</h4>
+                        <h4 class="font-bold text-blue-800 border-b pb-1 mb-2 uppercase">Data Pribadi & Akademik</h4>
                         <table class="w-full">
-                            <tr><td class="w-1/3 text-slate-500 py-1">Nama Lengkap</td><td class="font-bold">${s.nama||'-'}</td></tr>
+                            <tr><td class="w-1/3 text-slate-500 py-1">Nama Lengkap</td><td class="font-bold text-slate-900">${s.nama||'-'}</td></tr>
                             <tr><td class="text-slate-500 py-1">Unit / Status</td><td class="font-bold text-blue-600">${s.unit||'-'} <span class="bg-slate-200 text-slate-800 px-2 py-0.5 rounded text-[10px] ml-2">${s.status||'-'}</span></td></tr>
                             <tr><td class="text-slate-500 py-1">NIS / NISN / NIK</td><td>${s.nis||'-'} / ${s.nisn||'-'} / ${s.nik||'-'}</td></tr>
                             <tr><td class="text-slate-500 py-1">Tempat, Tgl Lahir</td><td>${s.tmplahir||'-'}, ${s.tgllahir||'-'}</td></tr>
@@ -1280,24 +1239,24 @@
                         </table>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-slate-50 p-2 rounded border border-slate-200">
-                            <h4 class="font-bold text-blue-800 border-b border-slate-200 pb-1 mb-2 uppercase text-xs">Alamat KK</h4>
+                        <div class="bg-slate-50 p-3 rounded border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-blue-800 border-b border-slate-200 pb-1 mb-2 uppercase text-xs">Alamat Sesuai KK</h4>
                             <p>${s.kkalamat||'-'} RT ${s.kkrt||'-'}/RW ${s.kkrw||'-'}</p><p>${s.kkkel||'-'}, ${s.kkkec||'-'}</p><p>${s.kkkota||'-'}</p>
                         </div>
-                        <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                        <div class="bg-slate-50 p-3 rounded border border-slate-200 shadow-sm">
                             <h4 class="font-bold text-blue-800 border-b border-slate-200 pb-1 mb-2 uppercase text-xs">Alamat Domisili</h4>
                             <p>${s.domalamat||'-'} RT ${s.domrt||'-'}/RW ${s.domrw||'-'}</p><p>${s.domkel||'-'}, ${s.domkec||'-'}</p><p>${s.domkota||'-'}</p>
                         </div>
                     </div>
                     <div>
-                        <h4 class="font-bold text-blue-800 border-b pb-1 mb-2 uppercase">Orang Tua / Wali</h4>
+                        <h4 class="font-bold text-blue-800 border-b pb-1 mb-2 uppercase">Data Orang Tua / Wali</h4>
                         <table class="w-full text-xs">
                             <tr class="border-b"><td class="w-1/3 text-slate-500 py-2 font-bold"><i class="fa-solid fa-user-tie mr-1"></i> Ayah</td>
-                                <td><b>${s.ayahnama||'-'}</b> (NIK: ${s.ayahnik||'-'})<br>Pekerjaan: ${s.ayahkerja||'-'}<br>HP: ${s.ayahhp||'-'} | Email: ${s.ayahemail||'-'}</td></tr>
+                                <td><b>${s.ayahnama||'-'}</b> (NIK: ${s.ayahnik||'-'})<br>Kerja: ${s.ayahkerja||'-'}<br>HP: <b>${s.ayahhp||'-'}</b></td></tr>
                             <tr class="border-b"><td class="text-slate-500 py-2 font-bold"><i class="fa-solid fa-user mr-1"></i> Ibu</td>
-                                <td><b>${s.ibunama||'-'}</b> (NIK: ${s.ibunik||'-'})<br>Pekerjaan: ${s.ibukerja||'-'}<br>HP: ${s.ibuhp||'-'} | Email: ${s.ibuemail||'-'}</td></tr>
+                                <td><b>${s.ibunama||'-'}</b> (NIK: ${s.ibunik||'-'})<br>Kerja: ${s.ibukerja||'-'}<br>HP: <b>${s.ibuhp||'-'}</b></td></tr>
                             <tr><td class="text-slate-500 py-2 font-bold"><i class="fa-solid fa-user-group mr-1"></i> Wali</td>
-                                <td><b>${s.walinama||'-'}</b> (NIK: ${s.walinik||'-'})<br>Pekerjaan: ${s.walikerja||'-'}<br>HP: ${s.walihp||'-'} | Email: ${s.waliemail||'-'}</td></tr>
+                                <td><b>${s.walinama||'-'}</b> (NIK: ${s.walinik||'-'})<br>Kerja: ${s.walikerja||'-'}<br>HP: <b>${s.walihp||'-'}</b></td></tr>
                         </table>
                     </div>
                 </div>`;
@@ -1309,7 +1268,6 @@
             e.preventDefault();
             setLoading(true, "Menyimpan...");
             const id = document.getElementById('formSiswaId').value || doc(collection(db, "siswa")).id; 
-            
             const data = {};
             const inputs = document.querySelectorAll('#siswaForm input, #siswaForm select');
             inputs.forEach(inp => {
@@ -1340,7 +1298,6 @@
         window.exportSiswaExcel = function() {
             if(window.siswaData.length === 0) { window.showToast('Data Kosong', 'error'); return; }
             
-            // Format ulang agar kolom Excel rapi
             const excelData = window.siswaData.map(s => ({
                 "Nama Lengkap": s.nama || '-', "NIS": s.nis || '-', "NISN": s.nisn || '-', "NIK": s.nik || '-',
                 "Jenis Kelamin": s.jk || '-', "Tempat Lahir": s.tmplahir || '-', "Tanggal Lahir": s.tgllahir || '-',
@@ -1397,7 +1354,6 @@
                     if(jsonData.length === 0) { window.showToast('File kosong', 'error'); setLoading(false); return; }
                     
                     setLoading(true, `Mengimport ${jsonData.length} data...`);
-                    
                     for(let i=0; i < jsonData.length; i+=400) {
                         const chunk = jsonData.slice(i, i+400);
                         const batch = writeBatch(db);
@@ -1408,13 +1364,11 @@
                         });
                         await batch.commit();
                     }
-                    
                     window.showToast(`Berhasil import ${jsonData.length} siswa!`);
                     window.tutupModal('importModal');
                     document.getElementById('importFile').value = '';
-                } catch(err) {
-                    console.error(err); window.showToast('Gagal memproses file', 'error');
-                } finally { setLoading(false); }
+                } catch(err) { console.error(err); window.showToast('Gagal memproses file', 'error'); } 
+                finally { setLoading(false); }
             };
             reader.readAsArrayBuffer(file);
         };
@@ -1556,13 +1510,11 @@
             window.print();
         };
 
-
         // --- SPP LOGIC & WHATSAPP ---
         document.getElementById('bulanSppSelect').addEventListener('change', (e) => { 
             window.currentBulanSpp = e.target.value; window.renderTabelSpp(); window.renderDashboard(); 
         });
 
-        // Event Listener untuk Filter Tambahan SPP
         if(document.getElementById('searchSpp')) {
             document.getElementById('searchSpp').addEventListener('input', () => window.renderTabelSpp());
             document.getElementById('filterUnitSpp').addEventListener('change', () => window.renderTabelSpp());
@@ -1574,12 +1526,10 @@
             tbody.innerHTML = '';
             let totalBulan = 0;
             
-            // Ambil Nilai Filter
             const valSearch = (document.getElementById('searchSpp') ? document.getElementById('searchSpp').value : '').toLowerCase();
             const valUnit = document.getElementById('filterUnitSpp') ? document.getElementById('filterUnitSpp').value : '';
             const valStatus = document.getElementById('filterStatusSpp') ? document.getElementById('filterStatusSpp').value : '';
 
-            // Filter & Sortir Siswa
             const filteredSiswa = [...window.siswaData].filter(s => {
                 const b = window.sppData[s.id] && window.sppData[s.id][window.currentBulanSpp];
                 const isLunas = b && b.lunas;
@@ -1619,7 +1569,6 @@
                     `;
                 }
                 
-                // Tambahan Tombol Histori Tahunan
                 aksiHtml += `<button onclick="window.bukaHistoriSpp('${s.id}')" class="px-2 py-1.5 bg-indigo-100 hover:bg-indigo-600 text-indigo-700 hover:text-white text-xs font-bold rounded transition" title="Kartu SPP Tahunan"><i class="fa-solid fa-calendar-days"></i></button>`;
                 
                 const opacity = s.status !== 'Aktif' ? 'opacity-50' : '';
@@ -1632,7 +1581,6 @@
             document.getElementById('sppLabelTerkumpul').innerText = `Total Terkumpul: ${window.formatRp(totalBulan)}`;
         };
 
-        // Fungsi Buka Histori 1 Tahun Ajaran
         window.bukaHistoriSpp = function(id) {
             const s = window.siswaData.find(x => x.id === id); if(!s) return;
             document.getElementById('hSiswaNama').innerText = s.nama;
@@ -1651,7 +1599,6 @@
                 const icon = isLunas ? '<i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i>' : '<i class="fa-solid fa-circle-xmark text-slate-300 text-xl"></i>';
                 const detail = isLunas ? `<p class="text-[10px] text-emerald-600 mt-1 font-medium">${dSpp[bln].tgl_bayar} • ${window.formatRp(dSpp[bln].nominal)}</p>` : `<p class="text-[10px] text-rose-500 font-bold mt-1">Belum Lunas</p>`;
 
-                // Penanda Semester (Bulan 1-6 Ganjil, 7-12 Genap)
                 const semesterInfo = index < 6 ? 'Semester Ganjil' : 'Semester Genap';
 
                 container.innerHTML += `
@@ -1708,7 +1655,7 @@
         window.batalBayar = async function(id) {
             setLoading(true);
             const bln = window.currentBulanSpp;
-            const updateData = {}; updateData[bln] = null; 
+            const updateData = {}; updateData[bln] = deleteField(); // Menggunakan deleteField untuk membuang bulan spesifik 
             try {
                 await setDoc(doc(db, "spp", id), updateData, { merge: true });
                 window.showToast('Dibatalkan', 'error');
