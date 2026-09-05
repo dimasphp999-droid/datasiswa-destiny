@@ -103,7 +103,7 @@
         </table>
     </div>
 
-    <!-- LOGIN SCREEN INSTAN -->
+    <!-- LOGIN SCREEN -->
     <div id="loginScreen" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-slate-900 px-4">
         <div class="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8">
             <div class="text-center mb-8">
@@ -114,12 +114,27 @@
                 <p class="text-sm text-slate-500 mt-1">Sistem Administrasi Terpadu Salatiga</p>
             </div>
             
-            <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100 text-center space-y-4">
-                <p class="text-sm text-blue-900 font-medium">Klik tombol di bawah untuk masuk ke panel Administrator secara instan.</p>
-                <button onclick="loginInstan()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-base">
-                    <i class="fa-solid fa-right-to-bracket"></i> Masuk Sistem Sekarang
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Username / Email</label>
+                    <input type="text" id="loginUsername" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Ketik: admin">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                    <div class="relative">
+                        <input type="password" id="loginPassword" required class="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Ketik: admin">
+                        <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-700 focus:outline-none">
+                            <i id="eyeIcon" class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-blue-50 text-blue-800 text-xs p-2 rounded text-center border border-blue-100">
+                    Gunakan username <b>admin</b> dan password <b>admin</b> untuk masuk ke sistem
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-base mt-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Masuk Sistem
                 </button>
-            </div>
+            </form>
             <p class="text-center text-xs text-slate-400 mt-6">PKBM Destiny Institute &copy; 2026</p>
         </div>
     </div>
@@ -250,24 +265,39 @@
 
                 <!-- TAB: DATA SISWA -->
                 <div id="tab-siswa" class="tab-content hidden-el space-y-6">
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col xl:flex-row gap-4 justify-between items-center">
-                        <input type="text" id="searchInput" placeholder="Cari nama, NIS..." class="w-full xl:w-80 px-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
-                        <div class="flex flex-wrap gap-2 w-full xl:w-auto justify-end">
-                            <button onclick="exportSiswaExcel()" class="bg-emerald-100 hover:bg-emerald-600 text-emerald-700 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
-                                <i class="fa-solid fa-download"></i> Export
-                            </button>
-                            <button onclick="bukaModalImport()" class="bg-indigo-100 hover:bg-indigo-600 text-indigo-700 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
-                                <i class="fa-solid fa-upload"></i> Import
-                            </button>
-                            <button onclick="bukaModalAksiMassal('hapus')" class="bg-rose-100 hover:bg-rose-600 text-rose-700 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
-                                <i class="fa-solid fa-trash-can"></i> Hapus Massal
-                            </button>
-                            <button onclick="bukaModalAksiMassal('update')" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
-                                <i class="fa-solid fa-layer-group"></i> Ubah Status
-                            </button>
-                            <button onclick="openSiswaModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
-                                <i class="fa-solid fa-plus"></i> Tambah Siswa
-                            </button>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
+                        <div class="flex flex-col xl:flex-row gap-4 justify-between items-center w-full">
+                            <div class="relative w-full xl:w-96">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fa-solid fa-magnifying-glass text-slate-400"></i></div>
+                                <input type="text" id="searchInput" placeholder="Cari nama, NIS..." class="w-full pl-10 pr-4 py-2.5 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none shadow-sm">
+                            </div>
+                            <div class="flex flex-wrap gap-2 w-full xl:w-auto justify-end">
+                                <button onclick="exportSiswaExcel()" class="bg-emerald-100 hover:bg-emerald-600 text-emerald-700 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
+                                    <i class="fa-solid fa-download"></i> Export
+                                </button>
+                                <button onclick="bukaModalImport()" class="bg-indigo-100 hover:bg-indigo-600 text-indigo-700 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
+                                    <i class="fa-solid fa-upload"></i> Import
+                                </button>
+                                <button onclick="bukaModalAksiMassal('hapus')" class="bg-rose-100 hover:bg-rose-600 text-rose-700 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
+                                    <i class="fa-solid fa-trash-can"></i> Hapus Massal
+                                </button>
+                                <button onclick="bukaModalAksiMassal('update')" class="bg-slate-800 hover:bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
+                                    <i class="fa-solid fa-layer-group"></i> Ubah Status
+                                </button>
+                                <button onclick="openSiswaModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2 shadow-sm">
+                                    <i class="fa-solid fa-plus"></i> Tambah Siswa
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <span class="text-xs font-bold text-slate-500 uppercase"><i class="fa-solid fa-filter mr-1"></i> Filter:</span>
+                            <select id="filterUnitTabel" class="px-3 py-1.5 border border-slate-300 rounded text-xs outline-none focus:ring-2 focus:ring-blue-500 font-bold text-slate-700">
+                                <option value="">Semua Kantong Belajar</option>
+                            </select>
+                            <select id="filterStatusTabel" class="px-3 py-1.5 border border-slate-300 rounded text-xs outline-none focus:ring-2 focus:ring-blue-500 font-bold text-slate-700">
+                                <option value="">Semua Status</option>
+                                <option value="Aktif">Aktif</option><option value="Baru">Baru</option><option value="Lulus">Lulus</option><option value="Mutasi">Mutasi</option>
+                            </select>
                         </div>
                     </div>
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
@@ -290,18 +320,40 @@
 
                 <!-- TAB: SPP -->
                 <div id="tab-spp" class="tab-content hidden-el space-y-6">
-                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <div>
-                            <h3 class="font-bold text-slate-800">Manajemen SPP</h3>
-                            <p class="text-xs font-bold text-emerald-600" id="sppLabelTerkumpul">Total Terkumpul: Rp 0</p>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col gap-4">
+                        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div>
+                                <h3 class="font-bold text-slate-800">Manajemen SPP</h3>
+                                <p class="text-xs font-bold text-emerald-600" id="sppLabelTerkumpul">Total Terkumpul: Rp 0</p>
+                            </div>
+                            <div class="flex gap-2 w-full sm:w-auto">
+                                <button onclick="exportSppExcel()" class="bg-emerald-100 text-emerald-700 hover:bg-emerald-600 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                                    <i class="fa-solid fa-file-excel"></i> <span class="hidden sm:inline">Export Rekap</span>
+                                </button>
+                            </div>
                         </div>
-                        <div class="flex gap-2 w-full sm:w-auto">
-                            <select id="bulanSppSelect" class="w-full sm:w-auto px-4 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 font-bold text-blue-700 shadow-sm">
-                                <!-- Diisi dinamis oleh JavaScript berdasarkan pengaturan Tahun Ajaran -->
-                            </select>
-                            <button onclick="exportSppExcel()" class="bg-emerald-100 text-emerald-700 hover:bg-emerald-600 hover:text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
-                                <i class="fa-solid fa-file-excel"></i> <span class="hidden sm:inline">Export Rekap</span>
-                            </button>
+                        <div class="flex flex-col xl:flex-row gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200 items-center justify-between">
+                            <div class="relative w-full xl:w-80">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fa-solid fa-magnifying-glass text-slate-400"></i></div>
+                                <input type="text" id="searchSpp" placeholder="Cari nama siswa..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                            <div class="flex flex-wrap gap-2 w-full xl:w-auto items-center">
+                                <span class="text-xs font-bold text-slate-500 uppercase hidden sm:block"><i class="fa-solid fa-filter mr-1"></i> Filter:</span>
+                                
+                                <select id="bulanSppSelect" class="px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 font-bold text-blue-700 shadow-sm">
+                                    <!-- Diisi dinamis oleh JavaScript -->
+                                </select>
+
+                                <select id="filterUnitSpp" class="px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 font-bold text-slate-700">
+                                    <option value="">Semua Kantong Belajar</option>
+                                </select>
+
+                                <select id="filterStatusSpp" class="px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 font-bold text-slate-700">
+                                    <option value="">Semua Status Bayar</option>
+                                    <option value="lunas">Sudah Lunas</option>
+                                    <option value="belum">Belum Bayar</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
@@ -752,19 +804,40 @@
             if(typeof confirmAction === 'function') confirmAction();
         });
 
-        // LOGIN INSTAN
-        window.loginInstan = function() {
-            document.getElementById('loginScreen').classList.add('hidden-el');
-            document.getElementById('mainApp').classList.remove('hidden-el');
-            document.body.classList.remove('overflow-hidden');
-            saveData();
-            showToast('Berhasil Masuk sebagai Admin!');
+        // LOGIN SYSTEM
+        window.togglePassword = function() {
+            const pwdInput = document.getElementById('loginPassword');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                pwdInput.type = 'password';
+                eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
         };
+
+        document.getElementById('loginForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('loginUsername').value;
+            const pass = document.getElementById('loginPassword').value;
+            
+            if(user === 'admin' && pass === 'admin') {
+                document.getElementById('loginScreen').classList.add('hidden-el');
+                document.getElementById('mainApp').classList.remove('hidden-el');
+                document.body.classList.remove('overflow-hidden');
+                saveData();
+                showToast('Login berhasil sebagai Admin!');
+            } else {
+                showToast('Username atau password salah!', 'error');
+            }
+        });
 
         window.prosesLogout = function() {
             document.getElementById('loginScreen').classList.remove('hidden-el');
             document.getElementById('mainApp').classList.add('hidden-el');
             document.body.classList.add('overflow-hidden');
+            document.getElementById('loginForm').reset();
             showToast('Berhasil Keluar');
         };
 
@@ -820,6 +893,8 @@
             const opts = window.unitData.sort((a,b)=>a.nama.localeCompare(b.nama)).map(u => `<option value="${u.nama}">${u.nama}</option>`).join('');
             if(document.getElementById('fUnit')) document.getElementById('fUnit').innerHTML = opts;
             if(document.getElementById('mUnit')) document.getElementById('mUnit').innerHTML = `<option value="SEMUA">-- SEMUA UNIT --</option>` + opts;
+            if(document.getElementById('filterUnitTabel')) document.getElementById('filterUnitTabel').innerHTML = `<option value="">Semua Kantong Belajar</option>` + opts;
+            if(document.getElementById('filterUnitSpp')) document.getElementById('filterUnitSpp').innerHTML = `<option value="">Semua Kantong Belajar</option>` + opts;
         };
 
         window.openUnitModal = function() {
@@ -850,10 +925,21 @@
         };
 
         // SISWA
-        function renderTabelSiswa(filter = '') {
+        function renderTabelSiswa() {
             const tbody = document.getElementById('siswaTableBody'); if(!tbody) return;
             tbody.innerHTML = '';
-            const filtered = window.siswaData.filter(s => (s.nama||'').toLowerCase().includes(filter.toLowerCase()) || (s.nis||'').includes(filter));
+            
+            const valSearch = (document.getElementById('searchInput') ? document.getElementById('searchInput').value : '').toLowerCase();
+            const valUnit = document.getElementById('filterUnitTabel') ? document.getElementById('filterUnitTabel').value : '';
+            const valStatus = document.getElementById('filterStatusTabel') ? document.getElementById('filterStatusTabel').value : '';
+
+            const filtered = window.siswaData.filter(s => {
+                const matchSearch = valSearch === '' || (s.nama||'').toLowerCase().includes(valSearch) || (s.nis||'').includes(valSearch);
+                const matchUnit = valUnit === '' || s.unit === valUnit;
+                const matchStatus = valStatus === '' || s.status === valStatus;
+                return matchSearch && matchUnit && matchStatus;
+            });
+
             filtered.forEach(s => {
                 const aksi = `
                     <button onclick="lihatDetailSiswa('${s.id}')" class="p-2 text-blue-600 hover:text-blue-800" title="Detail"><i class="fa-solid fa-eye"></i></button>
@@ -868,7 +954,10 @@
                     <td class="p-4 text-right whitespace-nowrap">${aksi}</td></tr>`;
             });
         }
-        document.getElementById('searchInput').addEventListener('input', (e) => renderTabelSiswa(e.target.value));
+        
+        if(document.getElementById('searchInput')) document.getElementById('searchInput').addEventListener('input', renderTabelSiswa);
+        if(document.getElementById('filterUnitTabel')) document.getElementById('filterUnitTabel').addEventListener('change', renderTabelSiswa);
+        if(document.getElementById('filterStatusTabel')) document.getElementById('filterStatusTabel').addEventListener('change', renderTabelSiswa);
 
         window.openSiswaModal = function() {
             document.getElementById('siswaForm').reset(); document.getElementById('formSiswaId').value = '';
@@ -1047,11 +1136,34 @@
             window.currentBulanSpp = e.target.value; renderTabelSpp(); renderDashboard();
         });
 
+        if(document.getElementById('searchSpp')) document.getElementById('searchSpp').addEventListener('input', renderTabelSpp);
+        if(document.getElementById('filterUnitSpp')) document.getElementById('filterUnitSpp').addEventListener('change', renderTabelSpp);
+        if(document.getElementById('filterStatusSpp')) document.getElementById('filterStatusSpp').addEventListener('change', renderTabelSpp);
+
         function renderTabelSpp() {
             const tbody = document.getElementById('sppTableBody'); if(!tbody) return;
             tbody.innerHTML = '';
             let totalBulan = 0;
-            window.siswaData.forEach(s => {
+            
+            const valSearch = (document.getElementById('searchSpp') ? document.getElementById('searchSpp').value : '').toLowerCase();
+            const valUnit = document.getElementById('filterUnitSpp') ? document.getElementById('filterUnitSpp').value : '';
+            const valStatus = document.getElementById('filterStatusSpp') ? document.getElementById('filterStatusSpp').value : '';
+
+            const filteredSiswa = [...window.siswaData].filter(s => {
+                const b = window.sppData[s.id] && window.sppData[s.id][window.currentBulanSpp];
+                const isLunas = b && b.lunas;
+
+                const matchSearch = valSearch === '' || (s.nama||'').toLowerCase().includes(valSearch) || (s.nis||'').toLowerCase().includes(valSearch);
+                const matchUnit = valUnit === '' || s.unit === valUnit;
+                
+                let matchStatus = true;
+                if(valStatus === 'lunas') matchStatus = isLunas;
+                if(valStatus === 'belum') matchStatus = !isLunas;
+
+                return matchSearch && matchUnit && matchStatus;
+            }).sort((a,b) => (a.status==='Aktif'?-1:1));
+
+            filteredSiswa.forEach(s => {
                 const b = window.sppData[s.id] && window.sppData[s.id][window.currentBulanSpp];
                 const isLunas = b && b.lunas;
                 if(isLunas) totalBulan += b.nominal;
