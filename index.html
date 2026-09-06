@@ -121,79 +121,79 @@
     </div>
 
     <!-- KARTU SPP PRINT AREA (CETAK RESMI KE FILE PDF) -->
-    <div id="kartuSppPrintArea" class="hidden-el bg-white text-slate-900 border-2 border-slate-900 p-6 rounded-2xl max-w-4xl mx-auto mt-6" style="width: 790px; max-width: 790px; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box; background: #ffffff;">
+    <div id="kartuSppPrintArea" class="hidden-el bg-white text-slate-900 border border-slate-400 p-5 rounded-lg" style="width: 100%; max-width: 100%; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; box-sizing: border-box; background: #ffffff;">
         <!-- KOP SURAT / HEADER RESMI BERLOGO -->
         <div class="flex items-center justify-between pb-3 border-b-2 border-slate-900 gap-4">
-            <div class="flex items-center gap-4">
-                <div class="w-20 h-20 bg-white rounded-xl p-1 border border-slate-200 flex items-center justify-center shrink-0 shadow-xs">
+            <div class="flex items-center gap-3.5">
+                <div class="w-16 h-16 bg-white rounded-lg p-1 border border-slate-200 flex items-center justify-center shrink-0">
                     <img id="printKartuLogo" src="destiny.png" alt="Logo Destiny Institute" class="w-full h-full object-contain" />
                 </div>
                 <div>
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none">Pusat Kegiatan Belajar Masyarakat (PKBM)</p>
-                    <h1 class="text-2xl font-black text-slate-900 uppercase tracking-wide mt-1 leading-tight">DESTINY INSTITUTE</h1>
-                    <p class="text-[11px] font-semibold text-slate-700 mt-0.5">Izin Operasional & NPSN Resmi Dinas Pendidikan • Kota Salatiga</p>
-                    <p class="text-[10px] text-slate-500 mt-0.5">Laman Resmi: destinyinstitute.sch.id • Email: info@destinyinstitute.sch.id • Telp/WA: 0812-3456-7890</p>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider leading-none">Pusat Kegiatan Belajar Masyarakat (PKBM)</p>
+                    <h1 class="text-xl font-black text-slate-900 uppercase tracking-wide mt-1 leading-tight">DESTINY INSTITUTE</h1>
+                    <p class="text-[10px] font-semibold text-slate-700 mt-0.5">Izin Operasional & NPSN Resmi Dinas Pendidikan • Kota Salatiga</p>
+                    <p class="text-[9px] text-slate-500 mt-0.5">Laman: destinyinstitute.sch.id • Email: info@destinyinstitute.sch.id • WA: 0812-3456-7890</p>
                 </div>
             </div>
             <div class="text-right pl-4 border-l-2 border-slate-200 shrink-0">
-                <span class="inline-block px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-slate-900 text-white mb-1.5">
+                <span class="inline-block px-2.5 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider bg-slate-900 text-white mb-1">
                     DOKUMEN RESMI
                 </span>
-                <p class="text-sm font-black text-slate-900" id="printKartuSppStatusBadge">-</p>
-                <p class="text-[11px] font-bold text-slate-600 mt-0.5" id="printKartuLunasRatio">0 / 12 Bulan</p>
+                <p class="text-xs font-black text-slate-900" id="printKartuSppStatusBadge">-</p>
+                <p class="text-[10px] font-bold text-slate-600 mt-0.5" id="printKartuLunasRatio">0 / 12 Bulan</p>
             </div>
         </div>
         
         <!-- ACCENT BAR -->
-        <div class="h-1 bg-gradient-to-r from-emerald-600 via-amber-500 to-blue-600 mb-3 rounded-full mt-1"></div>
+        <div class="h-1 bg-slate-900 mb-2.5 rounded-full mt-1"></div>
 
         <!-- JUDUL KARTU -->
-        <div class="bg-slate-900 text-white px-4 py-2 rounded-lg mb-3 flex items-center justify-between">
+        <div class="bg-slate-900 text-white px-3.5 py-1.5 rounded-md mb-2.5 flex items-center justify-between">
             <div class="text-xs font-black uppercase tracking-wider flex items-center gap-2">
                 <i class="fa-solid fa-address-card text-emerald-400"></i> KARTU KENDALI PEMBAYARAN SPP SISWA
             </div>
-            <div class="text-[11px] font-bold bg-slate-800 text-amber-300 px-2.5 py-0.5 rounded border border-slate-700">
+            <div class="text-[10px] font-bold bg-slate-800 text-amber-300 px-2.5 py-0.5 rounded border border-slate-700">
                 TAHUN AJARAN 2025 / 2026
             </div>
         </div>
 
         <!-- IDENTITAS SISWA & ORTU -->
-        <div class="grid grid-cols-2 gap-3 bg-slate-50/90 p-3.5 rounded-xl border border-slate-300 mb-3 text-xs">
-            <div class="space-y-1.5">
-                <div class="flex"><span class="w-32 font-bold text-slate-600">Nama Siswa</span><span class="w-3">:</span><span class="font-black text-slate-900 text-sm" id="printKartuNama">-</span></div>
-                <div class="flex"><span class="w-32 font-bold text-slate-600">NIS / NISN</span><span class="w-3">:</span><span class="font-mono text-slate-800 font-semibold" id="printKartuNis">-</span></div>
-                <div class="flex"><span class="w-32 font-bold text-slate-600">Kantong Belajar</span><span class="w-3">:</span><span class="font-black text-blue-700" id="printKartuUnit">-</span></div>
-                <div class="flex"><span class="w-32 font-bold text-slate-600">Status Siswa</span><span class="w-3">:</span><span class="font-semibold text-slate-800" id="printKartuStatusSiswa">-</span></div>
+        <div class="grid grid-cols-2 gap-3 bg-slate-50 p-2.5 rounded-md border border-slate-300 mb-2.5 text-xs">
+            <div class="space-y-1">
+                <div class="flex items-center"><span class="shrink-0 w-28 font-bold text-slate-600">Nama Siswa</span><span class="shrink-0 w-3">:</span><span class="font-black text-slate-900 truncate" id="printKartuNama">-</span></div>
+                <div class="flex items-center"><span class="shrink-0 w-28 font-bold text-slate-600">NIS / NISN</span><span class="shrink-0 w-3">:</span><span class="font-mono text-slate-800 font-semibold truncate" id="printKartuNis">-</span></div>
+                <div class="flex items-center"><span class="shrink-0 w-28 font-bold text-slate-600">Kantong Belajar</span><span class="shrink-0 w-3">:</span><span class="font-black text-blue-700 truncate" id="printKartuUnit">-</span></div>
+                <div class="flex items-center"><span class="shrink-0 w-28 font-bold text-slate-600">Status Siswa</span><span class="shrink-0 w-3">:</span><span class="font-semibold text-slate-800 truncate" id="printKartuStatusSiswa">-</span></div>
             </div>
-            <div class="space-y-1.5">
-                <div class="flex"><span class="w-36 font-bold text-slate-600">Orang Tua / Wali</span><span class="w-3">:</span><span class="font-bold text-slate-800" id="printKartuOrtu">-</span></div>
-                <div class="flex"><span class="w-36 font-bold text-slate-600">No. WhatsApp / HP</span><span class="w-3">:</span><span class="font-mono text-slate-800" id="printKartuHp">-</span></div>
-                <div class="flex"><span class="w-36 font-bold text-slate-600">Tarif SPP / Bulan</span><span class="w-3">:</span><span class="font-black text-emerald-700" id="printKartuNominal">Rp 0</span></div>
-                <div class="flex"><span class="w-36 font-bold text-slate-600">Periode Tagihan</span><span class="w-3">:</span><span class="font-semibold text-slate-700">Juli 2025 s/d Juni 2026</span></div>
+            <div class="space-y-1">
+                <div class="flex items-center"><span class="shrink-0 w-32 font-bold text-slate-600">Orang Tua / Wali</span><span class="shrink-0 w-3">:</span><span class="font-bold text-slate-800 truncate" id="printKartuOrtu">-</span></div>
+                <div class="flex items-center"><span class="shrink-0 w-32 font-bold text-slate-600">No. WhatsApp / HP</span><span class="shrink-0 w-3">:</span><span class="font-mono text-slate-800 truncate" id="printKartuHp">-</span></div>
+                <div class="flex items-center"><span class="shrink-0 w-32 font-bold text-slate-600">Tarif SPP / Bulan</span><span class="shrink-0 w-3">:</span><span class="font-black text-emerald-700 truncate" id="printKartuNominal">Rp 0</span></div>
+                <div class="flex items-center"><span class="shrink-0 w-32 font-bold text-slate-600">Periode Tagihan</span><span class="shrink-0 w-3">:</span><span class="font-semibold text-slate-700 truncate">Juli 2025 s/d Juni 2026</span></div>
             </div>
         </div>
 
         <!-- TABEL 12 BULAN -->
-        <table class="w-full text-left border-collapse border border-slate-400 text-xs mb-3">
+        <table class="w-full text-left border-collapse border border-slate-400 text-xs mb-2.5">
             <thead>
-                <tr class="bg-slate-800 text-white font-bold text-[11px] uppercase">
-                    <th class="p-2 border border-slate-700 text-center w-8">No</th>
-                    <th class="p-2 border border-slate-700">Bulan</th>
-                    <th class="p-2 border border-slate-700 text-center">Semester</th>
-                    <th class="p-2 border border-slate-700 text-right">Nominal SPP</th>
-                    <th class="p-2 border border-slate-700 text-center">Tgl Bayar</th>
-                    <th class="p-2 border border-slate-700 text-center">Metode</th>
-                    <th class="p-2 border border-slate-700 text-center">Status</th>
-                    <th class="p-2 border border-slate-700 text-center w-28">Validasi</th>
+                <tr class="bg-slate-800 text-white font-bold text-[10px] uppercase">
+                    <th class="p-1.5 border border-slate-600 text-center w-8">No</th>
+                    <th class="p-1.5 border border-slate-600">Bulan</th>
+                    <th class="p-1.5 border border-slate-600 text-center">Semester</th>
+                    <th class="p-1.5 border border-slate-600 text-right">Nominal SPP</th>
+                    <th class="p-1.5 border border-slate-600 text-center">Tgl Bayar</th>
+                    <th class="p-1.5 border border-slate-600 text-center">Metode</th>
+                    <th class="p-1.5 border border-slate-600 text-center">Status</th>
+                    <th class="p-1.5 border border-slate-600 text-center w-28">Validasi</th>
                 </tr>
             </thead>
-            <tbody id="printKartuTableBody" class="text-[11px]"></tbody>
-            <tfoot class="bg-slate-100 font-bold text-slate-800 border-t-2 border-slate-800 text-[11px]">
+            <tbody id="printKartuTableBody" class="text-[10.5px]"></tbody>
+            <tfoot class="bg-slate-100 font-bold text-slate-800 border-t-2 border-slate-800 text-[10.5px]">
                 <tr>
-                    <td colspan="3" class="p-2 border border-slate-300 text-right uppercase tracking-wider">Rekap Pembayaran:</td>
-                    <td class="p-2 border border-slate-300 text-right text-slate-900" id="printKartuFootTotalTagihan">Rp 0</td>
-                    <td colspan="2" class="p-2 border border-slate-300 text-center text-emerald-700">Terbayar: <b id="printKartuFootTotalBayar">Rp 0</b></td>
-                    <td colspan="2" class="p-2 border border-slate-300 text-center text-rose-700">Tunggakan: <b id="printKartuFootSisaBayar">Rp 0</b></td>
+                    <td colspan="3" class="p-1.5 border border-slate-300 text-right uppercase tracking-wider">Rekap Pembayaran:</td>
+                    <td class="p-1.5 border border-slate-300 text-right text-slate-900" id="printKartuFootTotalTagihan">Rp 0</td>
+                    <td colspan="2" class="p-1.5 border border-slate-300 text-center text-emerald-700">Terbayar: <b id="printKartuFootTotalBayar">Rp 0</b></td>
+                    <td colspan="2" class="p-1.5 border border-slate-300 text-center text-rose-700">Tunggakan: <b id="printKartuFootSisaBayar">Rp 0</b></td>
                 </tr>
             </tfoot>
         </table>
@@ -201,7 +201,7 @@
         <!-- RINGKASAN, CATATAN & STEMPEL PENGESAHAN -->
         <div class="grid grid-cols-12 gap-3 items-end pt-2 border-t-2 border-slate-900">
             <!-- Kolom Kiri: Rincian & Catatan -->
-            <div class="col-span-7 bg-slate-50 border border-slate-300 p-3 rounded-xl text-[10px] space-y-1 leading-relaxed">
+            <div class="col-span-7 bg-slate-50 border border-slate-300 p-2.5 rounded-md text-[9.5px] space-y-1 leading-relaxed">
                 <div class="flex justify-between border-b border-slate-200 pb-0.5 font-bold">
                     <span class="text-slate-600">Total Tagihan 1 Tahun (12 Bln)</span>
                     <span id="printKartuTotalTagihan" class="text-slate-900">Rp 0</span>
@@ -216,28 +216,28 @@
                 </div>
                 <p class="text-slate-500 pt-0.5">
                     <i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i>
-                    Dokumen elektronik ini diterbitkan secara resmi oleh Sistem Administrasi PKBM Destiny Institute dan sah sebagai kartu rekapitulasi pembayaran SPP digital.
+                    Dokumen elektronik ini diterbitkan secara resmi oleh Sistem Administrasi PKBM Destiny Institute dan sah sebagai kartu kendali pembayaran SPP.
                 </p>
             </div>
 
             <!-- Kolom Kanan: Tanda Tangan & Stempel Digital -->
             <div class="col-span-5 text-center text-xs">
-                <p class="text-slate-600 font-semibold" id="printKartuTgl">Salatiga, -</p>
-                <p class="font-bold text-slate-800 text-[11px] mt-0.5">Petugas Keuangan & Administrasi</p>
+                <p class="text-slate-600 font-semibold text-[10px]" id="printKartuTgl">Salatiga, -</p>
+                <p class="font-bold text-slate-800 text-[10.5px] mt-0.5">Petugas Keuangan & Administrasi</p>
                 
                 <!-- Stempel Digital Simulasi Resmi -->
-                <div class="relative my-1 h-14 flex items-center justify-center">
-                    <div class="border-2 border-dashed border-emerald-600/80 bg-emerald-50/80 px-2.5 py-1 rounded-lg flex items-center gap-2 transform -rotate-1 shadow-xs">
-                        <img id="printKartuStampLogo" src="destiny.png" alt="Emblem" class="w-8 h-8 object-contain opacity-90" />
-                        <div class="text-left text-[9px] font-black text-emerald-900 uppercase leading-tight">
+                <div class="relative my-1 h-12 flex items-center justify-center">
+                    <div class="border-2 border-dashed border-emerald-600/80 bg-emerald-50/80 px-2 py-0.5 rounded-md flex items-center gap-1.5 transform -rotate-1 shadow-xs">
+                        <img id="printKartuStampLogo" src="destiny.png" alt="Emblem" class="w-6 h-6 object-contain opacity-90" />
+                        <div class="text-left text-[8.5px] font-black text-emerald-900 uppercase leading-tight">
                             <span class="text-emerald-700 font-extrabold block">✓ VERIFIED & VALID</span>
                             PKBM DESTINY INSTITUTE
                         </div>
                     </div>
                 </div>
 
-                <p class="font-black text-slate-900 text-xs underline decoration-2 underline-offset-2">Bendahara PKBM Destiny</p>
-                <p class="text-[9px] text-slate-500">NIP / ID Petugas: DI-ADM-2025</p>
+                <p class="font-black text-slate-900 text-[11px] underline decoration-2 underline-offset-2">Bendahara PKBM Destiny</p>
+                <p class="text-[8.5px] text-slate-500">NIP / ID Petugas: DI-ADM-2025</p>
             </div>
         </div>
     </div>
@@ -2409,14 +2409,14 @@
             printArea.style.display = 'block';
 
             // Wait a moment for font/image rasterization
-            await new Promise(resolve => setTimeout(resolve, 150));
+            await new Promise(resolve => setTimeout(resolve, 200));
 
             const cleanNama = (s.nama || 'Siswa').trim().replace(/[^a-zA-Z0-9]/g, '_');
             const cleanNis = (s.nis || '').trim().replace(/[^a-zA-Z0-9]/g, '_');
             const pdfFileName = `Kartu_SPP_${cleanNama}${cleanNis ? '_' + cleanNis : ''}_2025-2026.pdf`;
 
             const opt = {
-                margin: [6, 6, 6, 6],
+                margin: [8, 8, 8, 8],
                 filename: pdfFileName,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: {
@@ -2424,7 +2424,8 @@
                     useCORS: true,
                     logging: false,
                     letterRendering: true,
-                    windowWidth: 800
+                    scrollX: 0,
+                    scrollY: 0
                 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
